@@ -24,7 +24,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: app.name,
+    title: `${app.name.en} | ${app.name.zh}`,
     description: app.description.en,
   };
 }

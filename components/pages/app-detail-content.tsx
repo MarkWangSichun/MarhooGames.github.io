@@ -52,13 +52,15 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
   const featureSections = app.featureSections ?? [];
   const gallery = app.gallery ?? [];
   const storeFacts = app.storeFacts ?? [];
+  const hasStoreLinks = Boolean(app.storeLinks.appStore || app.storeLinks.googlePlay);
+  const appName = t(app.name);
   const marqueeShots =
     gallery.length > 0
       ? gallery
       : [
           {
             src: app.image,
-            alt: { en: `${app.name} cover`, zh: `${app.name} 封面` },
+            alt: { en: `${app.name.en} cover`, zh: `${app.name.zh} 封面` },
             title: app.tagline,
             body: app.description,
           },
@@ -110,7 +112,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             {t({ en: "Home", zh: "首页" })}
           </Link>
           <span>/</span>
-          <span>{app.name}</span>
+          <span>{appName}</span>
         </div>
 
         <section className="overflow-hidden rounded-[2.4rem] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,244,237,0.9))] shadow-[0_24px_80px_rgba(24,34,52,0.12)]">
@@ -120,7 +122,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                 <div className="flex items-center gap-4">
                   <Image
                     src={app.icon}
-                    alt={`${app.name} icon`}
+                    alt={`${appName} icon`}
                     width={72}
                     height={72}
                     className="h-[72px] w-[72px] rounded-[20px] border border-stone-200 object-cover shadow-[0_12px_24px_rgba(24,34,52,0.12)]"
@@ -130,7 +132,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                       {t(app.category)}
                     </p>
                     <h1 className="font-heading text-4xl leading-none text-stone-950 sm:text-5xl">
-                      {app.name}
+                      {appName}
                     </h1>
                   </div>
                 </div>
@@ -140,20 +142,29 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <AppStoreBadgeLink
-                  href={app.storeLinks.appStore}
-                  label={t({
-                    en: "Download on the App Store",
-                    zh: "前往 App Store 下载",
-                  })}
-                />
-                <GooglePlayBadgeLink
-                  href={app.storeLinks.googlePlay}
-                  label={t({
-                    en: "Get it on Google Play",
-                    zh: "前往 Google Play",
-                  })}
-                />
+                {app.storeLinks.appStore ? (
+                  <AppStoreBadgeLink
+                    href={app.storeLinks.appStore}
+                    label={t({
+                      en: "Download on the App Store",
+                      zh: "前往 App Store 下载",
+                    })}
+                  />
+                ) : null}
+                {app.storeLinks.googlePlay ? (
+                  <GooglePlayBadgeLink
+                    href={app.storeLinks.googlePlay}
+                    label={t({
+                      en: "Get it on Google Play",
+                      zh: "前往 Google Play",
+                    })}
+                  />
+                ) : null}
+                {!hasStoreLinks ? (
+                  <span className="inline-flex items-center rounded-full border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-semibold text-stone-600">
+                    {t({ en: "Coming soon", zh: "即将推出" })}
+                  </span>
+                ) : null}
               </div>
             </div>
 
@@ -266,7 +277,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
           {t({ en: "Home", zh: "首页" })}
         </Link>
         <span>/</span>
-        <span>{app.name}</span>
+        <span>{appName}</span>
       </div>
 
       <section className="overflow-hidden rounded-[2.2rem] border border-white/70 bg-white/80 shadow-[0_24px_80px_rgba(24,34,52,0.12)] backdrop-blur">
@@ -279,13 +290,13 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             <div className="flex items-center gap-4">
               <Image
                 src={app.icon}
-                alt={`${app.name} icon`}
+                alt={`${appName} icon`}
                 width={84}
                 height={84}
                 className="h-[84px] w-[84px] rounded-[22px] border border-stone-200 object-cover"
               />
               <h1 className="font-heading text-5xl leading-none text-stone-950">
-                {app.name}
+                {appName}
               </h1>
             </div>
             <p className="text-xl text-stone-700">{t(app.tagline)}</p>
@@ -299,20 +310,29 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             ) : null}
           </div>
           <div className="flex flex-wrap gap-3">
-            <AppStoreBadgeLink
-              href={app.storeLinks.appStore}
-              label={t({
-                en: "Download on the App Store",
-                zh: "前往 App Store 下载",
-              })}
-            />
-            <GooglePlayBadgeLink
-              href={app.storeLinks.googlePlay}
-              label={t({
-                en: "Get it on Google Play",
-                zh: "前往 Google Play",
-              })}
-            />
+            {app.storeLinks.appStore ? (
+              <AppStoreBadgeLink
+                href={app.storeLinks.appStore}
+                label={t({
+                  en: "Download on the App Store",
+                  zh: "前往 App Store 下载",
+                })}
+              />
+            ) : null}
+            {app.storeLinks.googlePlay ? (
+              <GooglePlayBadgeLink
+                href={app.storeLinks.googlePlay}
+                label={t({
+                  en: "Get it on Google Play",
+                  zh: "前往 Google Play",
+                })}
+              />
+            ) : null}
+            {!hasStoreLinks ? (
+              <span className="inline-flex items-center rounded-full border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-semibold text-stone-600">
+                {t({ en: "Coming soon", zh: "即将推出" })}
+              </span>
+            ) : null}
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {app.highlights.map((item) => (
@@ -330,7 +350,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(252,211,77,0.28),transparent_42%),linear-gradient(180deg,rgba(12,10,9,0.05),rgba(12,10,9,0.78))]" />
             <Image
               src={app.image}
-              alt={app.name}
+              alt={appName}
               width={1286}
               height={593}
               className="h-full w-full object-cover"
@@ -349,7 +369,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
               <p className="max-w-lg text-sm leading-7 text-white/80">
                 {t({
                   en: "TreeHole Adventure works best when the world speaks first. This page now lets the screenshots carry the mood before the copy explains it.",
-                  zh: "TreeHole Adventure 最适合先让世界观自己说话，所以这个页面现在优先用截图建立氛围，再由文案补足信息。",
+                  zh: "《树洞-奇妙之旅》最适合先让世界观自己说话，所以这个页面现在优先用截图建立氛围，再由文案补足信息。",
                 })}
               </p>
             </div>

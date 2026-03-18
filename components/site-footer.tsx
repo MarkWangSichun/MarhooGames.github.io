@@ -30,7 +30,7 @@ export function SiteFooter() {
         </div>
         <div className="flex flex-wrap gap-4">
           <Link href="/about" className="transition hover:text-stone-950">
-            {t({ en: "About", zh: "关于" })}
+            {t({ en: "About", zh: "关于我们" })}
           </Link>
           <Link href="/privacy" className="transition hover:text-stone-950">
             {t({ en: "Privacy", zh: "隐私政策" })}
