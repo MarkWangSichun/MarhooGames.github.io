@@ -37,5 +37,5 @@ export default async function AppDetailPage({ params }: AppDetailPageProps) {
     notFound();
   }
 
-  return <AppDetailContent app={app} />;
+  return <AppDetailContent key={app.slug} app={app} />;
 }

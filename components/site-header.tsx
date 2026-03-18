@@ -6,10 +6,10 @@ import { useTranslate } from "@/lib/i18n";
 
 const links = [
   { href: "/about", label: { en: "About", zh: "关于" } },
-  { href: "/feedback", label: { en: "Feedback", zh: "反馈" } },
+  { href: "/privacy", label: { en: "Privacy Policy", zh: "隐私政策" } },
   {
-    href: "/privacy",
-    label: { en: "Privacy & Terms", zh: "隐私与条款" },
+    href: "/terms",
+    label: { en: "Terms of Service", zh: "用户条款" },
   },
 ];
 

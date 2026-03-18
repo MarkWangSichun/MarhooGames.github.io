@@ -68,11 +68,6 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
   const shotRefs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
-    setActiveIndex(0);
-    setAutoplayNonce(0);
-  }, [app.slug]);
-
-  useEffect(() => {
     if (app.slug !== "treehole-adventure" || marqueeShots.length <= 1) {
       return;
     }
@@ -474,21 +469,21 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
           </p>
           <h2 className="mt-4 font-heading text-3xl">
             {t({
-              en: "Want users to report issues or request features?",
-              zh: "想让用户提交问题反馈或功能建议？",
+              en: "Need legal and company pages to stay visible?",
+              zh: "希望法律页面和公司信息保持可见？",
             })}
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-stone-300">
             {t({
-              en: "The site already includes a dedicated feedback form route. Connect it later to email, Notion, Airtable, Supabase, or your own API.",
-              zh: "站点已经包含独立反馈表单页面，后续可以接入邮箱、Notion、Airtable、Supabase 或你自己的 API。",
+              en: "Privacy Policy, Terms of Service, and About pages are already linked across the site so product pages stay compliant and easy to trust.",
+              zh: "隐私政策、用户条款和关于页面已经在站内完成链接，方便产品页面保持合规展示并建立信任。",
             })}
           </p>
           <Link
-            href="/feedback"
+            href="/privacy"
             className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-stone-950 transition hover:bg-stone-100"
           >
-            {t({ en: "Open feedback form", zh: "打开反馈表单" })}
+            {t({ en: "View privacy policy", zh: "查看隐私政策" })}
           </Link>
         </div>
       </section>
