@@ -24,6 +24,28 @@ export const metadata: Metadata = {
     "Marhoo Studio builds focused mobile apps for creators, teams, and daily workflows.",
 };
 
+// The legacy site used hash routes such as `/#/privacyPolicy`.
+// URL fragments are never sent to the server, so Next.js redirects cannot see them.
+// This script runs before the app hydrates and upgrades those legacy hash links
+// to the current canonical routes, preserving old links that are already in the wild.
+const legacyHashRedirectScript = `
+  (function() {
+    var hash = window.location.hash;
+    var redirects = {
+      '#/privacyPolicy': '/privacy',
+      '#/termsAndConditions': '/terms'
+    };
+
+    var destination = redirects[hash];
+
+    if (!destination) {
+      return;
+    }
+
+    window.location.replace(destination);
+  })();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,6 +53,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head suppressHydrationWarning>
+        {/* Keep this in the document head so legacy hash URLs redirect as early as possible. */}
+        <script
+          id="legacy-hash-redirect"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: legacyHashRedirectScript }}
+        />
+      </head>
       <body
         className={`${headingFont.variable} ${bodyFont.variable} bg-background text-foreground antialiased`}
       >

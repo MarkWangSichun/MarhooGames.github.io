@@ -38,9 +38,6 @@ export function SiteFooter() {
           <Link href="/terms" className="transition hover:text-stone-950">
             {t({ en: "Terms", zh: "用户条款" })}
           </Link>
-          <Link href="/feedback" className="transition hover:text-stone-950">
-            {t({ en: "Feedback", zh: "反馈" })}
-          </Link>
         </div>
       </div>
     </footer>

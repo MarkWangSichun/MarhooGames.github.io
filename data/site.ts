@@ -365,51 +365,6 @@ export const appCatalog: AppInfo[] = [
         "https://play.google.com/store/apps/details?id=com.treeholegame.adventure",
     },
   },
-  {
-    slug: "track-mint",
-    name: "Track Mint",
-    category: {
-      en: "Lifestyle",
-      zh: "生活方式",
-    },
-    tagline: {
-      en: "Track habits and personal metrics with a visual, low-friction daily routine.",
-      zh: "用可视化、低负担的日常流程记录习惯和个人指标。",
-    },
-    description: {
-      en: "Track Mint helps users stay consistent with habits, score personal trends, and review progress through visual snapshots instead of heavy reports.",
-      zh: "Track Mint 帮助用户持续追踪习惯、观察个人趋势，并通过直观快照查看进展，而不是依赖冗长报表。",
-    },
-    audience: {
-      en: "People building repeatable personal routines",
-      zh: "希望建立可重复日常习惯的人群",
-    },
-    icon: "/apps/track-mint.svg",
-    image: "/apps/track-mint.svg",
-    status: "coming-soon",
-    highlights: [
-      {
-        en: "Simple daily input designed for retention",
-        zh: "面向长期留存设计的简洁日常记录方式",
-      },
-      {
-        en: "Visual trend summaries with low cognitive load",
-        zh: "低认知负担的可视化趋势总结",
-      },
-      {
-        en: "Friendly structure for habit experiments",
-        zh: "适合尝试和调整习惯方案的友好结构",
-      },
-      {
-        en: "Clear upgrade path to reminders and insights",
-        zh: "后续可自然扩展到提醒和洞察能力",
-      },
-    ],
-    storeLinks: {
-      appStore: "https://apps.apple.com/",
-      googlePlay: "https://play.google.com/store",
-    },
-  },
 ];
 
 export function getAppBySlug(slug: string) {

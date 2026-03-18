@@ -8,7 +8,7 @@ import { useTranslate } from "@/lib/i18n";
 const metrics = [
   {
     label: { en: "Apps", zh: "应用数" },
-    value: { en: "3", zh: "3" },
+    value: { en: "2", zh: "2" },
   },
   {
     label: { en: "Platforms", zh: "平台" },
@@ -40,14 +40,14 @@ export function HomeContent() {
             </p>
             <h1 className="max-w-3xl font-heading text-5xl leading-none tracking-tight text-stone-950 sm:text-6xl">
               {t({
-                en: "Three focused apps, one studio site built to convert visits into installs.",
-                zh: "三个聚焦产品，一个把访问转化为下载的工作室网站。",
+                en: "Two focused apps, one studio site built to convert visits into installs.",
+                zh: "两个聚焦产品，一个把访问转化为下载的工作室网站。",
               })}
             </h1>
             <p className="max-w-2xl text-lg leading-8 text-stone-600">
               {t({
-                en: "This first version presents your app lineup, routes users into dedicated detail pages, exposes legal pages clearly, and leaves a ready-to-connect feedback form for the next phase.",
-                zh: "当前版本用于展示你的应用矩阵，引导用户进入独立详情页，清晰呈现法律页面，并为下一阶段预留可接入后端的反馈表单。",
+                en: "This version presents your app lineup, routes users into dedicated detail pages, and exposes legal pages clearly.",
+                zh: "当前版本用于展示你的应用矩阵，引导用户进入独立详情页，并清晰呈现法律页面。",
               })}
             </p>
           </div>
@@ -57,12 +57,6 @@ export function HomeContent() {
               className="inline-flex items-center justify-center rounded-full bg-stone-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
             >
               {t({ en: "View featured app", zh: "查看主推应用" })}
-            </Link>
-            <Link
-              href="/feedback"
-              className="inline-flex items-center justify-center rounded-full border border-stone-300 bg-white px-6 py-3 text-sm font-semibold text-stone-800 transition hover:border-stone-950"
-            >
-              {t({ en: "Open feedback form", zh: "打开反馈表单" })}
             </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -133,7 +127,7 @@ export function HomeContent() {
               {t({ en: "App Lineup", zh: "应用矩阵" })}
             </p>
             <h2 className="mt-3 font-heading text-4xl text-stone-950">
-              {t({ en: "Explore all three products", zh: "查看全部三款产品" })}
+              {t({ en: "Explore both products", zh: "查看两款产品" })}
             </h2>
           </div>
         </div>
@@ -214,20 +208,20 @@ export function HomeContent() {
           </p>
           <h2 className="font-heading text-4xl">
             {t({
-              en: "Feedback collection is already wired into the site structure.",
-              zh: "站点结构已经为反馈收集预留好接入位置。",
+              en: "The site structure keeps legal and product information clear.",
+              zh: "站点结构让产品信息与法律信息保持清晰可见。",
             })}
           </h2>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5">
             <h3 className="text-lg font-semibold">
-              {t({ en: "Form-first setup", zh: "表单优先架构" })}
+              {t({ en: "Product-first structure", zh: "产品优先结构" })}
             </h3>
             <p className="mt-3 text-sm leading-7 text-stone-300">
               {t({
-                en: "The feedback page is implemented as a real front-end form with fields ready for API connection later.",
-                zh: "反馈页已经实现为真实的前端表单，字段结构可在后续直接接入 API。",
+                en: "The homepage now focuses on app discovery and directs users into dedicated product detail pages.",
+                zh: "首页现在专注于应用展示，并把用户引导到独立产品详情页。",
               })}
             </p>
           </div>
