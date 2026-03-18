@@ -59,7 +59,7 @@ export function FeedbackContent() {
               </option>
               {appCatalog.map((app) => (
                 <option key={app.slug} value={app.slug}>
-                  {app.name}
+                  {t(app.name)}
                 </option>
               ))}
             </select>
