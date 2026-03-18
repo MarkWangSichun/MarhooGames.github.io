@@ -3,13 +3,35 @@
 import {
   createContext,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import type { Language, LocalizedText } from "@/data/site";
 
 const STORAGE_KEY = "marhoo-language";
+
+function getStoredLanguage(): Language {
+  if (typeof window === "undefined") {
+    return "en";
+  }
+
+  return window.localStorage.getItem(STORAGE_KEY) === "zh" ? "zh" : "en";
+}
+
+function subscribe(onStoreChange: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === STORAGE_KEY) {
+      onStoreChange();
+    }
+  };
+
+  window.addEventListener("storage", handleStorage);
+  return () => window.removeEventListener("storage", handleStorage);
+}
 
 type LanguageContextValue = {
   language: Language;
@@ -19,18 +41,16 @@ type LanguageContextValue = {
 const LanguageContext = createContext<LanguageContextValue | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    if (typeof window === "undefined") {
-      return "en";
-    }
+  const language = useSyncExternalStore<Language>(
+    subscribe,
+    getStoredLanguage,
+    () => "en",
+  );
 
-    const savedLanguage = window.localStorage.getItem(STORAGE_KEY);
-    return savedLanguage === "zh" ? "zh" : "en";
-  });
-
-  useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, language);
-  }, [language]);
+  const setLanguage = (nextLanguage: Language) => {
+    window.localStorage.setItem(STORAGE_KEY, nextLanguage);
+    window.dispatchEvent(new StorageEvent("storage", { key: STORAGE_KEY }));
+  };
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage }}>

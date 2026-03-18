@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { TermsContent } from "@/components/pages/terms-content";
+import { LegalContent } from "@/components/pages/legal-content";
 
 export const metadata: Metadata = {
-  title: "Terms of Service",
+  title: "Privacy & Terms",
 };
 
 export default function TermsPage() {
-  return <TermsContent />;
+  return <LegalContent />;
 }
