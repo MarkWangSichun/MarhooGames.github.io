@@ -5,11 +5,12 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { useTranslate } from "@/lib/i18n";
 
 const links = [
-  { href: "/", label: { en: "Apps", zh: "应用" } },
   { href: "/about", label: { en: "About", zh: "关于" } },
   { href: "/feedback", label: { en: "Feedback", zh: "反馈" } },
-  { href: "/privacy", label: { en: "Privacy", zh: "隐私" } },
-  { href: "/terms", label: { en: "Terms", zh: "条款" } },
+  {
+    href: "/privacy",
+    label: { en: "Privacy & Terms", zh: "隐私与条款" },
+  },
 ];
 
 export function SiteHeader() {

@@ -27,7 +27,7 @@ export function AboutContent() {
           {t({ en: "Studio", zh: "工作室" })}
         </p>
         <h1 className="mt-4 font-heading text-5xl text-stone-950">
-          {t({ en: "About Marhoo Studio", zh: "关于 Marhoo Studio" })}
+          {t({ en: "Marhoo Studio", zh: "马虎工作室" })}
         </h1>
         <p className="mt-6 text-base leading-8 text-stone-700">
           {t({

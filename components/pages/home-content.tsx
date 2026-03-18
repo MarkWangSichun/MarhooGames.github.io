@@ -136,12 +136,6 @@ export function HomeContent() {
               {t({ en: "Explore all three products", zh: "查看全部三款产品" })}
             </h2>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-stone-600">
-            {t({
-              en: "Each card routes to a dedicated product page with screenshots, highlights, store links, and feature details.",
-              zh: "每张卡片都会进入独立产品页，展示截图、亮点、商店链接和功能信息。",
-            })}
-          </p>
         </div>
         <div className="grid gap-6 lg:grid-cols-3">
           {appCatalog.map((app) => (
