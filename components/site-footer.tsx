@@ -33,7 +33,10 @@ export function SiteFooter() {
             {t({ en: "About", zh: "关于" })}
           </Link>
           <Link href="/privacy" className="transition hover:text-stone-950">
-            {t({ en: "Privacy & Terms", zh: "隐私与条款" })}
+            {t({ en: "Privacy", zh: "隐私政策" })}
+          </Link>
+          <Link href="/terms" className="transition hover:text-stone-950">
+            {t({ en: "Terms", zh: "用户条款" })}
           </Link>
           <Link href="/feedback" className="transition hover:text-stone-950">
             {t({ en: "Feedback", zh: "反馈" })}
