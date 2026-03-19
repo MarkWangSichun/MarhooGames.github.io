@@ -35,6 +35,12 @@ export type AppInfo = {
         label: LocalizedText;
         value: LocalizedText;
     }[];
+    previewVideo?: {
+        src: string;
+        poster?: string;
+        title: LocalizedText;
+        body: LocalizedText;
+    };
     storeLinks: {
         appStore?: string;
         googlePlay?: string;
@@ -237,7 +243,7 @@ export const appCatalog: AppInfo[] = [
         image: "/apps/treehole-adventure-store/hero.jpg",
         source: {
             en: "Story and store facts referenced from the App Store listing",
-            zh: "剧情与商店信息参考 App Store 页面",
+            zh: "卡通风解谜游戏",
         },
         status: "live",
         highlights: [],
@@ -439,6 +445,18 @@ export const appCatalog: AppInfo[] = [
                 },
             },
         ],
+        previewVideo: {
+            src: "/apps/treehole-adventure-store/preview.mp4",
+            poster: "/apps/treehole-adventure-store/hero.jpg",
+            title: {
+                en: "App Store preview video",
+                zh: "App Store 预览视频",
+            },
+            body: {
+                en: "Official preview video captured from the App Store listing so visitors can see the game's motion, pacing, and puzzle atmosphere before downloading.",
+                zh: "接入苹果商店页面中的官方预览视频，让访问者在下载前先看到游戏的动态演出、节奏和解谜氛围。",
+            },
+        },
         storeLinks: {
             appStore: "https://apps.apple.com/app/id1473568894",
             googlePlay:
