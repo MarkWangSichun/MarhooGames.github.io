@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { appCatalog } from "@/data/site";
@@ -22,26 +23,75 @@ const metrics = [
 
 const contactMethods = [
   {
-    label: { en: "Xiaohongshu", zh: "小红书" },
-    value: { en: "@your_xiaohongshu", zh: "@你的小红书账号" },
-    description: {
-      en: "Use your official Xiaohongshu handle here for social discovery and DMs.",
-      zh: "这里可放工作室官方小红书账号，方便用户查看内容和私信联系。",
-    },
-    href: "#",
-    cta: { en: "Add profile link", zh: "补充主页链接" },
-  },
-  {
     label: { en: "Email", zh: "邮箱" },
     value: { en: "marhoogames@gmail.com", zh: "marhoogames@gmail.com" },
-    description: {
-      en: "For business inquiries, support, and partnerships.",
-      zh: "用于商务合作、用户支持与其他联系需求。",
-    },
-    href: "mailto:marhoogames@gmail.com",
-    cta: { en: "Send email", zh: "发送邮件" },
   },
 ];
+
+function ProductCardPreview({
+  src,
+  poster,
+  alt,
+}: {
+  src: string;
+  poster?: string;
+  alt: string;
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = videoRef.current;
+    if (!node) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry?.isIntersecting ?? false);
+      },
+      { threshold: 0.45 },
+    );
+
+    observer.observe(node);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const node = videoRef.current;
+    if (!node) {
+      return;
+    }
+
+    if (!isVisible) {
+      node.pause();
+      return;
+    }
+
+    node.play().catch(() => {
+      // Ignore autoplay failures and keep the poster visible.
+    });
+  }, [isVisible]);
+
+  return (
+    <div className="relative h-64 w-full overflow-hidden">
+      <video
+        ref={videoRef}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        poster={poster}
+        aria-label={alt}
+        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+      >
+        <source src={src} type="video/mp4" />
+      </video>
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-950/25 via-transparent to-transparent" />
+    </div>
+  );
+}
 
 export function HomeContent() {
   const t = useTranslate();
@@ -157,15 +207,27 @@ export function HomeContent() {
               key={app.slug}
               className="group overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-[0_18px_50px_rgba(24,34,52,0.08)] backdrop-blur"
             >
-              <div className="relative overflow-hidden bg-stone-100">
-                <Image
-                  src={app.image}
-                  alt={t(app.name)}
-                  width={900}
-                  height={640}
-                  className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                />
-              </div>
+              <Link
+                href={`/apps/${app.slug}`}
+                aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
+                className="relative block overflow-hidden bg-stone-100"
+              >
+                {app.previewVideo ? (
+                  <ProductCardPreview
+                    src={app.previewVideo.src}
+                    poster={app.previewVideo.poster}
+                    alt={t(app.name)}
+                  />
+                ) : (
+                  <Image
+                    src={app.image}
+                    alt={t(app.name)}
+                    width={900}
+                    height={640}
+                    className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                  />
+                )}
+              </Link>
               <div className="space-y-5 p-6">
                 <div className="space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">
@@ -232,18 +294,6 @@ export function HomeContent() {
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-300">
             {t({ en: "Contact", zh: "联系方式" })}
           </p>
-          <h2 className="font-heading text-4xl">
-            {t({
-              en: "Find Marhoo Studio on social media or reach us directly by email.",
-              zh: "通过社交媒体找到 Marhoo Studio，或直接通过邮箱联系我们。",
-            })}
-          </h2>
-          <p className="max-w-xl text-sm leading-7 text-stone-300">
-            {t({
-              en: "This section is dedicated to studio contact points. Right now it includes Xiaohongshu and email.",
-              zh: "这一区块专门用于展示工作室的对外联系方式。目前保留小红书和邮箱两个入口。",
-            })}
-          </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           {contactMethods.map((method) => (
@@ -257,17 +307,6 @@ export function HomeContent() {
               <h3 className="mt-3 text-lg font-semibold text-white">
                 {t(method.value)}
               </h3>
-              <p className="mt-3 text-sm leading-7 text-stone-300">
-                {t(method.description)}
-              </p>
-              <a
-                href={method.href}
-                target={method.href.startsWith("http") ? "_blank" : undefined}
-                rel={method.href.startsWith("http") ? "noreferrer" : undefined}
-                className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
-              >
-                {t(method.cta)}
-              </a>
             </div>
           ))}
         </div>

@@ -4,36 +4,33 @@ import { useLanguage } from "@/lib/i18n";
 
 export function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
+  const nextLanguage = language === "en" ? "zh" : "en";
 
   return (
-    <div
-      className="inline-flex items-center rounded-full border border-stone-200 bg-stone-50 p-1"
-      aria-label="Language switcher"
+    <button
+      type="button"
+      onClick={() => setLanguage(nextLanguage)}
+      className="inline-flex shrink-0 cursor-pointer items-center whitespace-nowrap rounded-full border border-stone-200 bg-stone-50 p-1"
+      aria-label={`Switch language to ${nextLanguage === "en" ? "English" : "Chinese"}`}
     >
-      <button
-        type="button"
-        onClick={() => setLanguage("en")}
+      <span
         className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
           language === "en"
             ? "bg-stone-950 text-white"
             : "text-stone-600 hover:text-stone-950"
         }`}
-        aria-pressed={language === "en"}
       >
         EN
-      </button>
-      <button
-        type="button"
-        onClick={() => setLanguage("zh")}
+      </span>
+      <span
         className={`rounded-full px-3 py-1.5 text-xs font-semibold ${
           language === "zh"
             ? "bg-stone-950 text-white"
             : "text-stone-600 hover:text-stone-950"
         }`}
-        aria-pressed={language === "zh"}
       >
         中文
-      </button>
-    </div>
+      </span>
+    </button>
   );
 }

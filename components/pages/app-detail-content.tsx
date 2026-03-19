@@ -52,6 +52,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
   const featureSections = app.featureSections ?? [];
   const gallery = app.gallery ?? [];
   const storeFacts = app.storeFacts ?? [];
+  const previewVideo = app.previewVideo;
   const hasStoreLinks = Boolean(app.storeLinks.appStore || app.storeLinks.googlePlay);
   const appName = t(app.name);
   const marqueeShots =
@@ -141,38 +142,9 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-3">
-                {app.storeLinks.appStore ? (
-                  <AppStoreBadgeLink
-                    href={app.storeLinks.appStore}
-                    label={t({
-                      en: "Download on the App Store",
-                      zh: "前往 App Store 下载",
-                    })}
-                  />
-                ) : null}
-                {app.storeLinks.googlePlay ? (
-                  <GooglePlayBadgeLink
-                    href={app.storeLinks.googlePlay}
-                    label={t({
-                      en: "Get it on Google Play",
-                      zh: "前往 Google Play",
-                    })}
-                  />
-                ) : null}
-                {!hasStoreLinks ? (
-                  <span className="inline-flex items-center rounded-full border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-semibold text-stone-600">
-                    {t({ en: "Coming soon", zh: "即将推出" })}
-                  </span>
-                ) : null}
-              </div>
             </div>
 
             <div className="space-y-4">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-400">
-                {t({ en: "Gallery", zh: "图片跑马灯" })}
-              </p>
-
               <div className="space-y-4">
                 <div className="relative">
                   {marqueeShots.length > 1 ? (
@@ -261,6 +233,50 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                       }`}
                     />
                   ))}
+                </div>
+
+                {previewVideo ? (
+                  <div>
+                    <div className="google-play-media-shell">
+                      <div className="google-play-media-frame sm:w-[60%]">
+                        <video
+                          controls
+                          playsInline
+                          preload="metadata"
+                          poster={previewVideo.poster}
+                          className="aspect-[1412/652] h-full w-full object-cover"
+                        >
+                          <source src={previewVideo.src} type="video/mp4" />
+                        </video>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="flex flex-wrap justify-center gap-3 pt-2">
+                  {app.storeLinks.appStore ? (
+                    <AppStoreBadgeLink
+                      href={app.storeLinks.appStore}
+                      label={t({
+                        en: "Download on the App Store",
+                        zh: "前往 App Store 下载",
+                      })}
+                    />
+                  ) : null}
+                  {app.storeLinks.googlePlay ? (
+                    <GooglePlayBadgeLink
+                      href={app.storeLinks.googlePlay}
+                      label={t({
+                        en: "Get it on Google Play",
+                        zh: "前往 Google Play",
+                      })}
+                    />
+                  ) : null}
+                  {!hasStoreLinks ? (
+                    <span className="inline-flex items-center rounded-full border border-stone-200 bg-stone-100 px-4 py-2 text-sm font-semibold text-stone-600">
+                      {t({ en: "Coming soon", zh: "即将推出" })}
+                    </span>
+                  ) : null}
                 </div>
               </div>
             </div>
