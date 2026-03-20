@@ -8,7 +8,9 @@ type AppDetailPageProps = {
 };
 
 export async function generateStaticParams() {
-  return appCatalog.map((app) => ({ slug: app.slug }));
+  return appCatalog
+    .filter((app) => app.status !== "coming-soon")
+    .map((app) => ({ slug: app.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +19,7 @@ export async function generateMetadata({
   const { slug } = await params;
   const app = getAppBySlug(slug);
 
-  if (!app) {
+  if (!app || app.status === "coming-soon") {
     return {
       title: "App Not Found",
     };
@@ -33,7 +35,7 @@ export default async function AppDetailPage({ params }: AppDetailPageProps) {
   const { slug } = await params;
   const app = getAppBySlug(slug);
 
-  if (!app) {
+  if (!app || app.status === "coming-soon") {
     notFound();
   }
 

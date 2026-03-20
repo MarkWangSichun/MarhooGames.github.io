@@ -78,6 +78,10 @@ textarea {
   width: clamp(16rem, 64vw, 25rem);
 }
 
+.store-carousel-slide--half {
+  width: clamp(8rem, 32vw, 12.5rem);
+}
+
 .google-play-media-shell {
   width: 100%;
   display: flex;
@@ -117,6 +121,10 @@ textarea {
 
   .store-carousel-slide {
     width: min(78vw, 18rem);
+  }
+
+  .store-carousel-slide--half {
+    width: min(39vw, 9rem);
   }
 
   .google-play-media-shell {
