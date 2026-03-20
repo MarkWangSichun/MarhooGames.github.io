@@ -5,46 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { AppInfo } from "@/data/site";
 import { useTranslate } from "@/lib/i18n";
-
-function AppStoreBadgeLink({ href, label }: { href: string; label: string }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      className="inline-flex items-center rounded-[0.65rem] transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-950/30"
-    >
-      <Image
-        src="/apps/marhoo/apple-app@2x.png"
-        alt={label}
-        width={200}
-        height={72}
-        className="h-[54px] w-[150px] sm:h-[72px] sm:w-[200px]"
-      />
-    </a>
-  );
-}
-
-function GooglePlayBadgeLink({ href, label }: { href: string; label: string }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={label}
-      className="inline-flex items-center rounded-[0.65rem] transition hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-stone-950/30"
-    >
-      <Image
-        src="/apps/marhoo/google-play-app@2x.png"
-        alt={label}
-        width={200}
-        height={72}
-        className="h-[54px] w-[150px] sm:h-[72px] sm:w-[200px]"
-      />
-    </a>
-  );
-}
+import { AppStoreBadgeLink, GooglePlayBadgeLink } from "@/components/store-badge-links";
 
 export function AppDetailContent({ app }: { app: AppInfo }) {
   const t = useTranslate();
@@ -53,37 +14,81 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
   const gallery = app.gallery ?? [];
   const storeFacts = app.storeFacts ?? [];
   const previewVideo = app.previewVideo;
+  const immersiveShowcase = app.immersiveShowcase;
+  const isImmersive = Boolean(immersiveShowcase);
+  const isCompactShowcase =
+    app.slug === "organic-veggie" && immersiveShowcase?.orientation === "portrait";
+  const showcase = immersiveShowcase ?? {
+    orientation: "landscape" as const,
+    heroEyebrow: { en: "Product detail", zh: "产品详情" },
+    heroTitle: app.tagline,
+    heroBody: app.description,
+    galleryEyebrow: { en: "Gallery", zh: "画面展示" },
+    galleryTitle: { en: "See the product at a glance", zh: "快速查看产品画面" },
+    audienceBody: app.description,
+    storyEyebrow: { en: "Story setup", zh: "产品说明" },
+    storyTitle: { en: "How the product is positioned", zh: "这个产品如何被呈现" },
+    featureEyebrow: { en: "Features", zh: "产品特点" },
+  };
   const hasStoreLinks = Boolean(app.storeLinks.appStore || app.storeLinks.googlePlay);
   const appName = t(app.name);
+  const fallbackShot =
+    gallery.length > 0
+      ? null
+      : {
+          src: app.image,
+          alt: { en: `${app.name.en} cover`, zh: `${app.name.zh} 封面` },
+          title: app.tagline,
+          body: app.description,
+        };
   const marqueeShots =
     gallery.length > 0
       ? gallery
-      : [
+      : fallbackShot
+        ? [fallbackShot]
+        : [];
+  const showcaseMedia = [
+    ...(previewVideo
+      ? [
           {
-            src: app.image,
-            alt: { en: `${app.name.en} cover`, zh: `${app.name.zh} 封面` },
-            title: app.tagline,
-            body: app.description,
+            type: "video" as const,
+            src: previewVideo.src,
+            poster: previewVideo.poster,
+            orientation: previewVideo.orientation ?? immersiveShowcase?.orientation ?? "landscape",
+            title: previewVideo.title,
+            body: previewVideo.body,
+            alt: previewVideo.title,
           },
-        ];
+        ]
+      : []),
+    ...marqueeShots.map((shot) => ({
+      type: "image" as const,
+      src: shot.src,
+      title: shot.title,
+      body: shot.body,
+      alt: shot.alt,
+      orientation: immersiveShowcase?.orientation ?? "landscape",
+    })),
+  ];
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoplayNonce, setAutoplayNonce] = useState(0);
   const shotRefs = useRef<Array<HTMLElement | null>>([]);
+  const previewRefs = useRef<Array<HTMLVideoElement | null>>([]);
 
   useEffect(() => {
-    if (app.slug !== "treehole-adventure" || marqueeShots.length <= 1) {
+    if (!isImmersive || showcaseMedia.length <= 1) {
       return;
     }
 
     const timer = window.setTimeout(() => {
-      setActiveIndex((current) => (current + 1) % marqueeShots.length);
+      setActiveIndex((current) => (current + 1) % showcaseMedia.length);
     }, 4000);
 
     return () => window.clearTimeout(timer);
-  }, [activeIndex, app.slug, autoplayNonce, marqueeShots.length]);
+  }, [activeIndex, autoplayNonce, isImmersive, showcaseMedia.length]);
 
   useEffect(() => {
-    if (app.slug !== "treehole-adventure") {
+    if (!isImmersive) {
       return;
     }
 
@@ -92,18 +97,31 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
       inline: "center",
       block: "nearest",
     });
-  }, [activeIndex, app.slug]);
+  }, [activeIndex, isImmersive]);
 
-  if (app.slug === "treehole-adventure") {
+  useEffect(() => {
+    previewRefs.current.forEach((video) => {
+      if (!video) {
+        return;
+      }
+
+      const playAttempt = video.play();
+      if (playAttempt instanceof Promise) {
+        playAttempt.catch(() => undefined);
+      }
+    });
+  }, [isImmersive, showcaseMedia.length]);
+
+  if (immersiveShowcase) {
     const setSlide = (nextIndex: number) => {
       setAutoplayNonce((current) => current + 1);
       setActiveIndex(nextIndex);
     };
     const goToPrev = () => {
-      setSlide(activeIndex === 0 ? marqueeShots.length - 1 : activeIndex - 1);
+      setSlide(activeIndex === 0 ? showcaseMedia.length - 1 : activeIndex - 1);
     };
     const goToNext = () => {
-      setSlide((activeIndex + 1) % marqueeShots.length);
+      setSlide((activeIndex + 1) % showcaseMedia.length);
     };
 
     return (
@@ -147,14 +165,14 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             <div className="space-y-4">
               <div className="space-y-4">
                 <div className="relative">
-                  {marqueeShots.length > 1 ? (
+                  {showcaseMedia.length > 1 ? (
                     <>
                       <button
                         type="button"
                         onClick={goToPrev}
                         aria-label={t({
-                          en: "Previous image",
-                          zh: "上一张图片",
+                          en: "Previous media",
+                          zh: "上一项内容",
                         })}
                         className="absolute left-0 top-[7.5rem] z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/92 text-xl text-stone-950 shadow-[0_10px_30px_rgba(24,34,52,0.18)] backdrop-blur hover:bg-white sm:left-2 sm:top-[8.75rem]"
                       >
@@ -164,8 +182,8 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                         type="button"
                         onClick={goToNext}
                         aria-label={t({
-                          en: "Next image",
-                          zh: "下一张图片",
+                          en: "Next media",
+                          zh: "下一项内容",
                         })}
                         className="absolute right-0 top-[7.5rem] z-10 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/92 text-xl text-stone-950 shadow-[0_10px_30px_rgba(24,34,52,0.18)] backdrop-blur hover:bg-white sm:right-2 sm:top-[8.75rem]"
                       >
@@ -176,20 +194,22 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
 
                   <div className="store-carousel-shell">
                     <div className="store-carousel-track">
-                      {marqueeShots.map((shot, index) => (
+                      {showcaseMedia.map((item, index) => (
                         <article
-                          key={shot.src}
+                          key={`${item.type}-${item.src}`}
                           ref={(node) => {
                             shotRefs.current[index] = node;
                           }}
-                          className="store-carousel-slide snap-center"
+                          className={`store-carousel-slide snap-center ${
+                            isCompactShowcase ? "store-carousel-slide--half" : ""
+                          }`}
                         >
                           <button
                             type="button"
                             onClick={() => setSlide(index)}
                             aria-label={`${t({
-                              en: "Select image",
-                              zh: "选择图片",
+                              en: item.type === "video" ? "Select video" : "Select image",
+                              zh: item.type === "video" ? "选择视频" : "选择图片",
                             })} ${index + 1}`}
                             aria-pressed={index === activeIndex}
                             className={`block w-full overflow-hidden rounded-[1.5rem] border bg-stone-950 transition ${
@@ -198,16 +218,85 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                                 : "scale-[0.94] border-stone-200/70 opacity-65"
                             }`}
                           >
-                            <div className="relative aspect-[1286/594]">
-                              <Image
-                                src={shot.src}
-                                alt={t(shot.alt)}
-                                width={1286}
-                                height={594}
-                                className="h-full w-full object-cover"
-                                priority={index === 0}
-                              />
-                            </div>
+                            {(item.orientation === "portrait") ? (
+                              <div
+                                className={`flex justify-center bg-[linear-gradient(180deg,#eef5d8,#f9efe2)] ${
+                                  isCompactShowcase ? "p-0" : "p-5 sm:p-6"
+                                }`}
+                              >
+                                <div
+                                  className={`relative aspect-[1320/2868] w-full overflow-hidden ${
+                                    isCompactShowcase
+                                      ? "max-w-none"
+                                      : "max-w-[18rem] rounded-[1.2rem] border border-stone-200/70 bg-white shadow-[0_18px_36px_rgba(24,34,52,0.14)] sm:max-w-[20rem]"
+                                  }`}
+                                >
+                                  {item.type === "video" ? (
+                                    <>
+                                      <video
+                                        ref={(node) => {
+                                          previewRefs.current[index] = node;
+                                        }}
+                                        muted
+                                        loop
+                                        playsInline
+                                        preload="metadata"
+                                        poster={item.poster}
+                                        className="h-full w-full object-cover"
+                                        aria-label={t(item.alt)}
+                                      >
+                                        <source src={item.src} type="video/mp4" />
+                                      </video>
+                                      <div className="pointer-events-none absolute left-3 top-3 rounded-full bg-stone-950/78 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white">
+                                        {t({ en: "Preview", zh: "预览视频" })}
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <Image
+                                      src={item.src}
+                                      alt={t(item.alt)}
+                                      width={1320}
+                                      height={2868}
+                                      className="h-full w-full object-cover"
+                                      priority={index === 0}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="relative aspect-[1286/594]">
+                                {item.type === "video" ? (
+                                  <>
+                                    <video
+                                      ref={(node) => {
+                                        previewRefs.current[index] = node;
+                                      }}
+                                      muted
+                                      loop
+                                      playsInline
+                                      preload="metadata"
+                                      poster={item.poster}
+                                      className="h-full w-full object-cover"
+                                      aria-label={t(item.alt)}
+                                    >
+                                      <source src={item.src} type="video/mp4" />
+                                    </video>
+                                    <div className="pointer-events-none absolute left-4 top-4 rounded-full bg-stone-950/78 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white">
+                                      {t({ en: "Preview", zh: "预览视频" })}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <Image
+                                    src={item.src}
+                                    alt={t(item.alt)}
+                                    width={1286}
+                                    height={594}
+                                    className="h-full w-full object-cover"
+                                    priority={index === 0}
+                                  />
+                                )}
+                              </div>
+                            )}
                           </button>
                         </article>
                       ))}
@@ -216,14 +305,14 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                 </div>
 
                 <div className="flex items-center justify-center gap-2">
-                  {marqueeShots.map((shot, index) => (
+                  {showcaseMedia.map((item, index) => (
                     <button
-                      key={`${shot.src}-dot`}
+                      key={`${item.type}-${item.src}-dot`}
                       type="button"
                       onClick={() => setSlide(index)}
                       aria-label={`${t({
-                        en: "Go to image",
-                        zh: "切换到图片",
+                        en: item.type === "video" ? "Go to video" : "Go to image",
+                        zh: item.type === "video" ? "切换到视频" : "切换到图片",
                       })} ${index + 1}`}
                       aria-pressed={index === activeIndex}
                       className={`h-2.5 rounded-full transition ${
@@ -234,24 +323,6 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
                     />
                   ))}
                 </div>
-
-                {previewVideo ? (
-                  <div>
-                    <div className="google-play-media-shell">
-                      <div className="google-play-media-frame sm:w-[60%]">
-                        <video
-                          controls
-                          playsInline
-                          preload="metadata"
-                          poster={previewVideo.poster}
-                          className="aspect-[1412/652] h-full w-full object-cover"
-                        >
-                          <source src={previewVideo.src} type="video/mp4" />
-                        </video>
-                      </div>
-                    </div>
-                  </div>
-                ) : null}
 
                 <div className="flex flex-wrap justify-center gap-3 pt-2">
                   {app.storeLinks.appStore ? (
@@ -374,37 +445,28 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             />
             <div className="absolute inset-x-0 bottom-0 space-y-4 p-6 text-white sm:p-8">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
-                {t({ en: "Image-first game page", zh: "以画面为主的游戏详情页" })}
+                {t(showcase.heroEyebrow)}
               </p>
               <h2 className="max-w-xl font-heading text-3xl leading-tight sm:text-4xl">
-                {t({
-                  en: "Fall through the tree hole, enter the missing town, and solve your way back.",
-                  zh: "坠入树洞，进入失踪者之城，并靠解谜一步步找回归途。",
-                })}
+                {t(showcase.heroTitle)}
               </h2>
               <p className="max-w-lg text-sm leading-7 text-white/80">
-                {t({
-                  en: "TreeHole Adventure works best when the world speaks first. This page now lets the screenshots carry the mood before the copy explains it.",
-                  zh: "《树洞-奇妙之旅》最适合先让世界观自己说话，所以这个页面现在优先用截图建立氛围，再由文案补足信息。",
-                })}
+                {t(showcase.heroBody)}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {gallery.length > 0 ? (
+      {showcaseMedia.length > 0 ? (
         <section className="space-y-6">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
-                {t({ en: "Screens from the adventure", zh: "游戏截图" })}
+                {t(showcase.galleryEyebrow)}
               </p>
               <h2 className="mt-3 font-heading text-4xl text-stone-950">
-                {t({
-                  en: "Let the world sell the game",
-                  zh: "先用画面把游戏讲出来",
-                })}
+                {t(showcase.galleryTitle)}
               </h2>
             </div>
           </div>
@@ -412,44 +474,76 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
           <div className="grid gap-5 lg:grid-cols-[1.2fr_0.8fr]">
             <article className="overflow-hidden rounded-[2rem] border border-stone-200 bg-stone-950 shadow-[0_16px_50px_rgba(24,34,52,0.12)]">
               <div className="relative">
-                <Image
-                  src={gallery[0].src}
-                  alt={t(gallery[0].alt)}
-                  width={1286}
-                  height={593}
-                  className="h-full w-full object-cover"
-                />
+                {showcaseMedia[0].type === "video" ? (
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={showcaseMedia[0].poster}
+                    className={`h-full w-full object-cover ${
+                      showcaseMedia[0].orientation === "portrait"
+                        ? "aspect-[652/1412]"
+                        : "aspect-[1286/593]"
+                    }`}
+                  >
+                    <source src={showcaseMedia[0].src} type="video/mp4" />
+                  </video>
+                ) : (
+                  <Image
+                    src={showcaseMedia[0].src}
+                    alt={t(showcaseMedia[0].alt)}
+                    width={1286}
+                    height={593}
+                    className="h-full w-full object-cover"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/10 to-transparent" />
                 <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
                   <h3 className="max-w-xl font-heading text-3xl leading-tight">
-                    {t(gallery[0].title)}
+                    {t(showcaseMedia[0].title)}
                   </h3>
                   <p className="mt-3 max-w-xl text-sm leading-7 text-white/80">
-                    {t(gallery[0].body)}
+                    {t(showcaseMedia[0].body)}
                   </p>
                 </div>
               </div>
             </article>
 
             <div className="grid gap-5">
-              {gallery.slice(1, 3).map((shot) => (
+              {showcaseMedia.slice(1, 3).map((item) => (
                 <article
-                  key={shot.src}
+                  key={`${item.type}-${item.src}`}
                   className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/85 shadow-[0_16px_40px_rgba(24,34,52,0.08)]"
                 >
-                  <Image
-                    src={shot.src}
-                    alt={t(shot.alt)}
-                    width={1286}
-                    height={594}
-                    className="h-auto w-full object-cover"
-                  />
+                  {item.type === "video" ? (
+                    <video
+                      controls
+                      playsInline
+                      preload="metadata"
+                      poster={item.poster}
+                      className={`h-auto w-full object-cover ${
+                        item.orientation === "portrait"
+                          ? "aspect-[652/1412]"
+                          : "aspect-[1286/594]"
+                      }`}
+                    >
+                      <source src={item.src} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <Image
+                      src={item.src}
+                      alt={t(item.alt)}
+                      width={1286}
+                      height={594}
+                      className="h-auto w-full object-cover"
+                    />
+                  )}
                   <div className="space-y-2 p-5">
                     <h3 className="font-heading text-2xl text-stone-950">
-                      {t(shot.title)}
+                      {t(item.title)}
                     </h3>
                     <p className="text-sm leading-7 text-stone-600">
-                      {t(shot.body)}
+                      {t(item.body)}
                     </p>
                   </div>
                 </article>
@@ -458,24 +552,40 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
           </div>
 
           <div className="grid gap-5 md:grid-cols-3">
-            {gallery.slice(3).map((shot) => (
+            {showcaseMedia.slice(3).map((item) => (
               <article
-                key={shot.src}
+                key={`${item.type}-${item.src}`}
                 className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/85 shadow-[0_16px_40px_rgba(24,34,52,0.08)]"
               >
-                <Image
-                  src={shot.src}
-                  alt={t(shot.alt)}
-                  width={1286}
-                  height={594}
-                  className="h-auto w-full object-cover"
-                />
+                {item.type === "video" ? (
+                  <video
+                    controls
+                    playsInline
+                    preload="metadata"
+                    poster={item.poster}
+                    className={`h-auto w-full object-cover ${
+                      item.orientation === "portrait"
+                        ? "aspect-[652/1412]"
+                        : "aspect-[1286/594]"
+                    }`}
+                  >
+                    <source src={item.src} type="video/mp4" />
+                  </video>
+                ) : (
+                  <Image
+                    src={item.src}
+                    alt={t(item.alt)}
+                    width={1286}
+                    height={594}
+                    className="h-auto w-full object-cover"
+                  />
+                )}
                 <div className="space-y-2 p-5">
                   <h3 className="font-heading text-2xl text-stone-950">
-                    {t(shot.title)}
+                    {t(item.title)}
                   </h3>
                   <p className="text-sm leading-7 text-stone-600">
-                    {t(shot.body)}
+                    {t(item.body)}
                   </p>
                 </div>
               </article>
@@ -493,10 +603,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
             {t(app.audience)}
           </h2>
           <p className="mt-4 text-sm leading-7 text-stone-600">
-            {t({
-              en: "If the player likes hand-drawn mystery worlds, scene-based puzzles, and the feeling of uncovering how a town broke apart, the page should feel like an invitation to play.",
-              zh: "如果玩家喜欢手绘神秘世界、场景式解谜，以及逐步拼出小镇真相的体验，这个页面就应该像一张邀请你开始游玩的门票。",
-            })}
+            {t(showcase.audienceBody)}
           </p>
         </div>
         <div className="rounded-[2rem] border border-stone-200 bg-stone-950 p-8 text-white">
@@ -528,13 +635,10 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
         <section className="rounded-[2rem] border border-white/70 bg-white/80 p-8 shadow-[0_16px_50px_rgba(24,34,52,0.08)]">
           <div className="max-w-2xl">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
-              {t({ en: "Story setup", zh: "故事设定" })}
+              {t(showcase.storyEyebrow)}
             </p>
             <h2 className="mt-4 font-heading text-4xl text-stone-950">
-              {t({
-                en: "A mystery setup with immediate stakes",
-                zh: "一开场就建立风险与谜团",
-              })}
+              {t(showcase.storyTitle)}
             </h2>
           </div>
           <div className="mt-8 grid gap-4 lg:grid-cols-2">
@@ -559,7 +663,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
         <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[2rem] border border-white/70 bg-white/80 p-8 shadow-[0_16px_50px_rgba(24,34,52,0.08)]">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
-              {t({ en: "Why it plays well as a game", zh: "为什么它像一款值得玩的游戏" })}
+              {t(showcase.featureEyebrow)}
             </p>
             <div className="mt-6 space-y-4">
               {featureSections.map((section) => (

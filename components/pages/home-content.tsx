@@ -3,28 +3,27 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AppStoreBadgeLink, GooglePlayBadgeLink } from "@/components/store-badge-links";
 import { appCatalog } from "@/data/site";
 import { useTranslate } from "@/lib/i18n";
 
 const metrics = [
   {
-    label: { en: "Apps", zh: "应用数" },
-    value: { en: "3", zh: "3" },
-  },
-  {
     label: { en: "Platforms", zh: "平台" },
     value: { en: "iOS / Android", zh: "iOS / Android" },
-  },
-  {
-    label: { en: "Focus", zh: "方向" },
-    value: { en: "Brand + Utility", zh: "品牌 + 实用性" },
   },
 ];
 
 const contactMethods = [
   {
     label: { en: "Email", zh: "邮箱" },
+    title: { en: "Contact us", zh: "联系我们" },
     value: { en: "marhoogames@gmail.com", zh: "marhoogames@gmail.com" },
+    description: {
+      en: "For business inquiries and product support, please use email.",
+      zh: "商务合作和产品支持，请直接通过邮箱联系。",
+    },
+    href: "mailto:marhoogames@gmail.com",
   },
 ];
 
@@ -32,10 +31,12 @@ function ProductCardPreview({
   src,
   poster,
   alt,
+  orientation,
 }: {
   src: string;
   poster?: string;
   alt: string;
+  orientation?: "landscape" | "portrait";
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -88,7 +89,9 @@ function ProductCardPreview({
       >
         <source src={src} type="video/mp4" />
       </video>
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-950/25 via-transparent to-transparent" />
+      {orientation !== "portrait" ? (
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-950/25 via-transparent to-transparent" />
+      ) : null}
     </div>
   );
 }
@@ -98,15 +101,9 @@ export function HomeContent() {
   const featuredApp = appCatalog[0];
 
   return (
-    <div className="space-y-16 pb-8 sm:space-y-24">
+    <div className="space-y-8 pb-8 sm:space-y-12">
       <section className="grid gap-10 rounded-[2rem] border border-white/70 bg-white/75 p-8 shadow-[0_24px_80px_rgba(24,34,52,0.12)] backdrop-blur md:grid-cols-[1.2fr_0.8fr] md:p-12">
         <div className="space-y-8">
-          <div className="inline-flex items-center rounded-full border border-stone-300/80 bg-stone-50 px-4 py-2 text-sm font-semibold text-stone-700">
-            {t({
-              en: "Marhoo Studio mobile products",
-              zh: "Marhoo Studio 移动产品",
-            })}
-          </div>
           <div className="space-y-5">
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
               {t({ en: "Studio Homepage", zh: "工作室官网" })}
@@ -117,20 +114,6 @@ export function HomeContent() {
                 zh: "专注应用，开发中",
               })}
             </h1>
-            <p className="max-w-2xl text-lg leading-8 text-stone-600">
-              {t({
-                en: "This version presents your app lineup, routes users into dedicated detail pages, and exposes legal pages clearly.",
-                zh: "当前版本用于展示你的产品，引导用户进入独立详情页，并清晰呈现法律页面。",
-              })}
-            </p>
-          </div>
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <Link
-              href={`/apps/${featuredApp.slug}`}
-              className="inline-flex items-center justify-center rounded-full bg-stone-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
-            >
-              {t({ en: "View featured app", zh: "查看主推应用" })}
-            </Link>
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {metrics.map((metric) => (
@@ -152,9 +135,6 @@ export function HomeContent() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(244,184,97,0.35),_transparent_36%),radial-gradient(circle_at_bottom_left,_rgba(88,138,255,0.4),_transparent_32%)]" />
           <div className="relative space-y-6">
             <div className="space-y-3">
-              <p className="text-sm uppercase tracking-[0.24em] text-stone-300">
-                {t({ en: "Launch Priority", zh: "优先展示" })}
-              </p>
               <div className="flex items-center gap-4">
                 <Image
                   src={featuredApp.icon}
@@ -193,7 +173,7 @@ export function HomeContent() {
         </div>
       </section>
 
-      <section className="space-y-6">
+      <section className="space-y-3">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
@@ -201,112 +181,164 @@ export function HomeContent() {
             </p>
           </div>
         </div>
-        <div className="grid gap-6 lg:grid-cols-3">
-          {appCatalog.map((app) => (
-            <article
-              key={app.slug}
-              className="group overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-[0_18px_50px_rgba(24,34,52,0.08)] backdrop-blur"
-            >
-              <Link
-                href={`/apps/${app.slug}`}
-                aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
-                className="relative block overflow-hidden bg-stone-100"
+        <div className="grid gap-3 lg:grid-cols-3">
+          {appCatalog.map((app) => {
+            const useStaticPreview = !app.previewVideo;
+            const hasDetailPage = app.status !== "coming-soon";
+
+            return (
+              <article
+                key={app.slug}
+                className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-[0_18px_50px_rgba(24,34,52,0.08)] backdrop-blur"
               >
-                {app.previewVideo ? (
-                  <ProductCardPreview
-                    src={app.previewVideo.src}
-                    poster={app.previewVideo.poster}
-                    alt={t(app.name)}
-                  />
-                ) : (
-                  <Image
-                    src={app.image}
-                    alt={t(app.name)}
-                    width={900}
-                    height={640}
-                    className="h-64 w-full object-cover transition duration-500 group-hover:scale-[1.03]"
-                  />
-                )}
-              </Link>
-              <div className="space-y-5 p-6">
-                <div className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">
-                    {t(app.category)}
-                  </p>
-                  <div className="flex items-center gap-4">
-                    <Image
-                      src={app.icon}
-                      alt={`${t(app.name)} icon`}
-                      width={64}
-                      height={64}
-                      className="h-16 w-16 rounded-[18px] border border-stone-200 object-cover"
+              {hasDetailPage ? (
+                <Link
+                  href={`/apps/${app.slug}`}
+                  aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
+                  className="relative block overflow-hidden bg-stone-100"
+                >
+                  {!useStaticPreview && app.previewVideo ? (
+                    <ProductCardPreview
+                      src={app.previewVideo.src}
+                      poster={app.previewVideo.poster}
+                      alt={t(app.name)}
+                      orientation={app.previewVideo.orientation}
                     />
-                    <div>
-                      <h3 className="font-heading text-3xl text-stone-950">
+                  ) : (
+                    <div className="h-64 w-full overflow-hidden">
+                      <Image
+                        src={app.image}
+                        alt={t(app.name)}
+                        width={900}
+                        height={640}
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                      />
+                    </div>
+                  )}
+                </Link>
+              ) : (
+                <div className="relative block overflow-hidden bg-stone-100">
+                  <div className="h-64 w-full overflow-hidden">
+                    <Image
+                      src={app.image}
+                      alt={t(app.name)}
+                      width={900}
+                      height={640}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
+              <div className="flex flex-1 flex-col space-y-5 p-6">
+                <div className="flex items-center gap-4">
+                  {hasDetailPage ? (
+                    <Link
+                      href={`/apps/${app.slug}`}
+                      aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
+                      className="block overflow-hidden rounded-[18px]"
+                    >
+                      <Image
+                        src={app.icon}
+                        alt={`${t(app.name)} icon`}
+                        width={64}
+                        height={64}
+                        className="h-16 w-16 rounded-[18px] border border-stone-200 object-cover transition duration-300 hover:scale-[1.03]"
+                      />
+                    </Link>
+                  ) : (
+                    <div className="block overflow-hidden rounded-[18px]">
+                      <Image
+                        src={app.icon}
+                        alt={`${t(app.name)} icon`}
+                        width={64}
+                        height={64}
+                        className="h-16 w-16 rounded-[18px] border border-stone-200 object-cover"
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <p className="mb-1 text-left text-sm font-bold text-stone-500">
+                      {t(app.category)}
+                    </p>
+                    {hasDetailPage ? (
+                      <Link
+                        href={`/apps/${app.slug}`}
+                        className="inline-block"
+                      >
+                        <h3 className="font-heading text-[1.3rem] leading-tight text-stone-950 transition hover:text-stone-700">
+                          {t(app.name)}
+                        </h3>
+                      </Link>
+                    ) : (
+                      <h3 className="font-heading text-[1.3rem] leading-tight text-stone-950">
                         {t(app.name)}
                       </h3>
-                      {app.source ? (
-                        <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-stone-500">
-                          {t(app.source)}
-                        </p>
-                      ) : null}
-                    </div>
+                    )}
                   </div>
-                  <p className="text-sm leading-7 text-stone-600">
-                    {t(app.tagline)}
-                  </p>
                 </div>
-                <ul className="space-y-2 text-sm text-stone-700">
-                  {app.highlights.slice(0, 3).map((item) => (
-                    <li key={item.en}>{t(item)}</li>
-                  ))}
-                </ul>
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    href={`/apps/${app.slug}`}
-                    className="inline-flex items-center justify-center rounded-full bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
-                  >
-                    {t({ en: "View details", zh: "查看详情" })}
-                  </Link>
-                  {app.storeLinks.appStore ? (
-                    <a
-                      href={app.storeLinks.appStore}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center justify-center rounded-full border border-stone-300 px-5 py-3 text-sm font-semibold text-stone-800 transition hover:border-stone-950"
-                    >
-                      App Store
-                    </a>
-                  ) : (
-                    <span className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-500">
-                      {t({ en: "Coming soon", zh: "即将推出" })}
-                    </span>
-                  )}
+                <div className="mt-auto space-y-3 border-t border-stone-200/80 pt-4">
+                  <div className="flex justify-center">
+                    {hasDetailPage ? (
+                      <Link
+                        href={`/apps/${app.slug}`}
+                        className="inline-flex items-center justify-center rounded-full bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
+                      >
+                        {t({ en: "View details", zh: "查看详情" })}
+                      </Link>
+                    ) : (
+                      <span className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-500">
+                        {t({ en: "Coming soon", zh: "即将推出" })}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex min-h-12 flex-wrap items-center justify-center gap-2 sm:flex-nowrap">
+                    {app.storeLinks.appStore ? (
+                      <AppStoreBadgeLink
+                        href={app.storeLinks.appStore}
+                        compact
+                        label={t({
+                          en: "Download on the App Store",
+                          zh: "前往 App Store 下载",
+                        })}
+                      />
+                    ) : null}
+                    {app.storeLinks.googlePlay ? (
+                      <GooglePlayBadgeLink
+                        href={app.storeLinks.googlePlay}
+                        compact
+                        label={t({
+                          en: "Get it on Google Play",
+                          zh: "前往 Google Play",
+                        })}
+                      />
+                    ) : null}
+                    {!hasDetailPage && !app.storeLinks.appStore && !app.storeLinks.googlePlay ? null : !app.storeLinks.appStore && !app.storeLinks.googlePlay ? (
+                      <span className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-500">
+                        {t({ en: "Coming soon", zh: "即将推出" })}
+                      </span>
+                    ) : null}
+                  </div>
                 </div>
               </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </section>
 
-      <section className="grid gap-6 rounded-[2rem] border border-stone-200 bg-stone-950 px-8 py-10 text-white lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="space-y-4">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-300">
-            {t({ en: "Contact", zh: "联系方式" })}
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
+      <section className="mx-auto max-w-2xl rounded-[999px] border border-white/55 bg-[rgba(255,249,239,0.78)] px-5 py-5 text-stone-950 shadow-[0_14px_30px_rgba(24,34,52,0.09)] backdrop-blur-xl sm:px-8 sm:py-6">
+        <div className="mx-auto max-w-xl text-center">
           {contactMethods.map((method) => (
-            <div
-              key={method.label.en}
-              className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5"
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-400">
-                {t(method.label)}
+            <div key={method.label.en} className="px-1.5 py-1 sm:px-3">
+              <p className="mx-auto max-w-lg text-[13px] leading-6 text-stone-600 sm:text-sm">
+                {t({
+                  en: `${method.title.en}. ${method.description.en}`,
+                  zh: `${method.title.zh}，${method.description.zh}`,
+                })}
               </p>
-              <h3 className="mt-3 text-lg font-semibold text-white">
+              <p className="mt-4 break-all font-heading text-lg leading-tight tracking-tight text-stone-950 sm:text-xl">
                 {t(method.value)}
-              </h3>
+              </p>
             </div>
           ))}
         </div>

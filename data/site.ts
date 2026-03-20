@@ -38,8 +38,21 @@ export type AppInfo = {
     previewVideo?: {
         src: string;
         poster?: string;
+        orientation?: "landscape" | "portrait";
         title: LocalizedText;
         body: LocalizedText;
+    };
+    immersiveShowcase?: {
+        orientation: "landscape" | "portrait";
+        heroEyebrow: LocalizedText;
+        heroTitle: LocalizedText;
+        heroBody: LocalizedText;
+        galleryEyebrow: LocalizedText;
+        galleryTitle: LocalizedText;
+        audienceBody: LocalizedText;
+        storyEyebrow: LocalizedText;
+        storyTitle: LocalizedText;
+        featureEyebrow: LocalizedText;
     };
     storeLinks: {
         appStore?: string;
@@ -55,15 +68,15 @@ export const appCatalog: AppInfo[] = [
             zh: "APP代号：专注",
         },
         category: {
-            en: "Utility",
+            en: "Productivity app",
             zh: "效率应用",
         },
         tagline: {
-            en: "A focus-first mobile app concept built to reduce friction and keep attention on the task at hand.",
+            en: "A mobile app built around focus, aiming to reduce distractions and bring attention back to the task at hand.",
             zh: "一款以专注为核心的移动应用，目标是减少干扰，让注意力重新回到当前任务。",
         },
         description: {
-            en: "APP Codename: Focus is positioned as a focused productivity product in the studio lineup. It is currently presented as an upcoming app, with the existing icon asset already integrated into the site and ready for future store details, screenshots, and launch copy.",
+            en: "APP Codename: Focus is presented on the studio site as a productivity app in the lineup and is currently shown as coming soon. The existing icon asset has already been integrated into the site, with room reserved for future store links, screenshots, and launch copy.",
             zh: "《APP代号：专注》作为工作室产品矩阵中的效率型应用加入官网，目前以即将推出的产品形式展示。站点已接入现有图标资源，并为后续补充商店链接、截图和上线文案预留了完整位置。",
         },
         audience: {
@@ -75,20 +88,12 @@ export const appCatalog: AppInfo[] = [
         status: "coming-soon",
         highlights: [
             {
-                en: "Newly added as the studio's priority product on the homepage",
-                zh: "作为工作室当前优先展示的产品加入首页首位",
+                en: "Built to improve efficiency",
+                zh: "目标改善效率",
             },
             {
-                en: "Focus-oriented positioning expands the lineup beyond games",
-                zh: "以专注效率为定位，补充了工作室不止于游戏的产品方向",
-            },
-            {
-                en: "Existing icon asset is already wired into the site structure",
-                zh: "现有图标素材已直接接入网站结构，可继续扩展详情内容",
-            },
-            {
-                en: "Prepared for future screenshots, store pages, and launch notes",
-                zh: "已为后续补充截图、商店页和上线说明做好准备",
+                en: "Blending focus with home design, so every session of concentration earns something back",
+                zh: "结合家装，让你的每次专注都有回报！",
             },
         ],
         storySections: [
@@ -143,14 +148,14 @@ export const appCatalog: AppInfo[] = [
         slug: "organic-veggie",
         name: {
             en: "Organic Veggie",
-            zh: "Organic Veggie",
+            zh: "有机蔬菜农场",
         },
         category: {
             en: "Game",
             zh: "游戏",
         },
         tagline: {
-            en: "A live mobile game from marhoo.com with App Store and Google Play distribution.",
+            en: "A live farming-and-home-decor mobile game from marhoo.com, available on the App Store and Google Play.",
             zh: "来自 marhoo.com 的已上线手游，已在 App Store 和 Google Play 发布。",
         },
         description: {
@@ -158,61 +163,271 @@ export const appCatalog: AppInfo[] = [
             zh: "Organic Veggie 是工作室已经发布、并正在 marhoo.com 展示中的游戏之一。本站版本复用了官网中的官方图标、背景视觉和商店跳转链接。",
         },
         audience: {
-            en: "Mobile players looking for a casual published title",
-            zh: "想体验轻松休闲已发布作品的移动端玩家",
+            en: "Players who want a low-pressure farming and decorating routine that fits into a few minutes a day",
+            zh: "适合想在每天几分钟内轻松种菜、布置房间、获得低压力陪伴感的玩家",
         },
-        icon: "/apps/marhoo/organic-veggie-icon.webp",
-        image: "/apps/marhoo/organic-veggie-bg.webp",
+        icon: "/apps/organic-veggie-store/icon.jpg",
+        image: "/apps/organic-veggie-store/screen-3.webp",
         source: {
-            en: "Imported from www.marhoo.com",
-            zh: "内容引自 www.marhoo.com",
+            en: "Home-decor and farming casual game",
+            zh: "家装 x 种植 休闲游戏",
         },
         status: "live",
         highlights: [
             {
-                en: "Official app icon and homepage art reused from marhoo.com",
-                zh: "复用 marhoo.com 的官方应用图标与首页视觉",
+                en: "Grow vegetables from mystery seeds and check back in with only a few taps a day",
+                zh: "从未知种子里种出不同蔬菜，每天只要几次轻操作就能推进",
             },
             {
-                en: "Direct App Store link from the live Marhoo site",
-                zh: "保留来自 Marhoo 线上站点的 App Store 直达链接",
+                en: "Decorate rooms freely with furniture, layout choices, and unlockable expansions",
+                zh: "可以自由摆放家具、调整房间布局，并逐步解锁新空间",
             },
             {
-                en: "Direct Google Play link from the live Marhoo site",
-                zh: "保留来自 Marhoo 线上站点的 Google Play 直达链接",
+                en: "App Store description emphasizes no grind, optional ads, and a relaxed pace",
+                zh: "App Store 文案强调无强制肝度、广告可选、整体节奏轻松",
             },
             {
-                en: "Presented as an already-published game",
-                zh: "以已上线游戏的形式展示",
+                en: "Latest App Store version is 1.4, released on December 28, 2025",
+                zh: "App Store 当前最新版本为 1.4，更新时间是 2025 年 12 月 28 日",
             },
         ],
         storySections: [
             {
                 title: {
-                    en: "Published title",
-                    zh: "已发布作品",
+                    en: "Built as an antidote to grind",
+                    zh: "作为“反肝”体验被做出来",
                 },
                 body: {
-                    en: "Organic Veggie is shown here as a live Marhoo release. The current detail page preserves its official storefront routes and studio branding.",
-                    zh: "Organic Veggie 在这里以 Marhoo 已上线作品的形式呈现，当前详情页保留了官方商店入口和工作室品牌视觉。",
+                    en: "In the App Store description, Marhoo says the team wanted to make something calmer after playing too many repetitive, grind-heavy games. That intent shows up in the short daily loop and the soft, domestic art direction.",
+                    zh: "按照 App Store 介绍，Marhoo 想在玩过太多重复且偏肝的游戏之后，做一款更轻松的作品。这个出发点直接体现在它的短时日常循环，以及偏居家、柔和的视觉方向上。",
+                },
+            },
+            {
+                title: {
+                    en: "A tiny daily farm loop",
+                    zh: "围绕日常几分钟展开的小循环",
+                },
+                body: {
+                    en: "The core rhythm is intentionally small: plant, water, wait, harvest, then spend what you earned on furniture or new seeds. It is designed to fit around real life instead of trying to consume it.",
+                    zh: "它的核心节奏被刻意压得很小：播种、浇水、等待、收获，然后把赚到的资源用在家具或新种子上。它更像是嵌进生活里的轻度陪伴，而不是反过来占满时间。",
                 },
             },
         ],
         featureSections: [
             {
                 title: {
-                    en: "Store-ready presentation",
-                    zh: "面向商店的展示方式",
+                    en: "Grow vegetables with surprise built in",
+                    zh: "用带一点未知感的方式种菜",
                 },
                 body: {
-                    en: "This page is structured so screenshots, feature explanations, update notes, and support content can be added later without changing the route design.",
-                    zh: "该页面结构已为后续补充截图、功能说明、更新日志和支持内容预留空间，无需再改动路由设计。",
+                    en: "The App Store copy leans on discovery: you plant a seed first, then see what kind of vegetable comes out. That simple reveal loop makes the farming feel more playful than routine.",
+                    zh: "App Store 文案里反复强调“先种下，再看看会长出什么”。这种轻度开盲盒式的反馈，让种植过程比纯粹重复劳动更有趣。",
+                },
+            },
+            {
+                title: {
+                    en: "Decoration is a co-star, not a side system",
+                    zh: "装饰不是附属，而是并列核心",
+                },
+                body: {
+                    en: "Room unlocks, furniture shopping, and free placement are treated as major reasons to stay. The game is not only about farming output, but about shaping a place that feels yours.",
+                    zh: "解锁房间、逛家具商店和自由摆放并不是附属功能，而是主要吸引力之一。它不只是让你追求产出，也鼓励你把空间真正布置成自己的样子。",
+                },
+            },
+            {
+                title: {
+                    en: "Free-to-play without forced interruption",
+                    zh: "免费游玩，但尽量不打断节奏",
+                },
+                body: {
+                    en: "The listing explicitly says ads are optional rather than mandatory. That matters for this kind of cozy loop, because the promise is relaxation, not constant monetization pressure.",
+                    zh: "商店页明确写了广告是可选而不是强制的。对这种休闲循环来说，这一点很重要，因为它承诺的是放松感，而不是持续被商业化打断。",
                 },
             },
         ],
+        gallery: [
+            {
+                src: "/apps/organic-veggie-store/screen-1.webp",
+                alt: {
+                    en: "Organic Veggie planting screen from the App Store listing",
+                    zh: "Organic Veggie 的种植界面截图",
+                },
+                title: {
+                    en: "Start with a tiny patch and grow vegetables",
+                    zh: "从一小块田地开始，把蔬菜种出来",
+                },
+                body: {
+                    en: "The first App Store screenshot focuses on the basic loop: sow seeds, water them, and check back later to see what came out of the soil.",
+                    zh: "第一张 App Store 截图直接展示了最核心的玩法：播种、浇水，然后隔一段时间回来看看土地里长出了什么。",
+                },
+            },
+            {
+                src: "/apps/organic-veggie-store/screen-2.webp",
+                alt: {
+                    en: "Organic Veggie room expansion screenshot from the App Store listing",
+                    zh: "Organic Veggie 的房间扩展截图",
+                },
+                title: {
+                    en: "Unlock rooms and keep the home expanding",
+                    zh: "逐步解锁房间，让家慢慢变大",
+                },
+                body: {
+                    en: "The second screenshot highlights room expansion, showing that the game grows from a simple farm loop into a home-building routine.",
+                    zh: "第二张截图对应房间扩展功能，说明这款游戏会从简单种植，逐步延伸到完整的居家布置体验。",
+                },
+            },
+            {
+                src: "/apps/organic-veggie-store/screen-3.webp",
+                alt: {
+                    en: "Organic Veggie decoration mode screenshot from the App Store listing",
+                    zh: "Organic Veggie 的装饰模式截图",
+                },
+                title: {
+                    en: "Decorate freely instead of following a fixed template",
+                    zh: "自由摆放，而不是照着固定模板装修",
+                },
+                body: {
+                    en: "The decoration UI is front and center here, reinforcing one of the store page's main promises: high freedom in furniture placement and room styling.",
+                    zh: "这一张把装修界面完整放到前景，也呼应了商店页的核心卖点之一：家具摆放和房间风格拥有相对高的自由度。",
+                },
+            },
+            {
+                src: "/apps/organic-veggie-store/screen-4.webp",
+                alt: {
+                    en: "Organic Veggie furniture shop screenshot from the App Store listing",
+                    zh: "Organic Veggie 的家具商店截图",
+                },
+                title: {
+                    en: "Pick from a large furniture catalog",
+                    zh: "从大量家具里慢慢挑自己喜欢的",
+                },
+                body: {
+                    en: "The furniture store screenshot makes the collecting side feel tangible. You are not only growing vegetables for numbers, but also earning toward a more personal room.",
+                    zh: "家具商店把收集与布置的目标具体化了。你种菜不只是为了数字增长，也是在为一个更符合自己喜好的空间持续攒资源。",
+                },
+            },
+            {
+                src: "/apps/organic-veggie-store/screen-5.webp",
+                alt: {
+                    en: "Organic Veggie seed collection screenshot from the App Store listing",
+                    zh: "Organic Veggie 的种子领取截图",
+                },
+                title: {
+                    en: "Seed collection keeps the loop moving",
+                    zh: "收种子这一步，让循环持续往前走",
+                },
+                body: {
+                    en: "The final screenshot turns seed collecting into a light ritual. It supports the game's promise that even very short sessions can still feel like progress.",
+                    zh: "最后一张截图展示了领取种子的环节，让整个循环显得像一种轻量日常仪式，也支撑了“只玩几分钟也有推进感”的定位。",
+                },
+            },
+        ],
+        storeFacts: [
+            {
+                label: {
+                    en: "Category on App Store",
+                    zh: "App Store 分类",
+                },
+                value: {
+                    en: "Games, with Simulation and Casual as listed genres",
+                    zh: "Games，细分标签为 Simulation 与 Casual",
+                },
+            },
+            {
+                label: {
+                    en: "Latest App Store version",
+                    zh: "App Store 最新版本",
+                },
+                value: {
+                    en: "1.4, released on December 28, 2025",
+                    zh: "1.4，发布于 2025 年 12 月 28 日",
+                },
+            },
+            {
+                label: {
+                    en: "Size",
+                    zh: "大小",
+                },
+                value: {
+                    en: "242.2 MB",
+                    zh: "242.2 MB",
+                },
+            },
+            {
+                label: {
+                    en: "Compatibility",
+                    zh: "兼容性",
+                },
+                value: {
+                    en: "iPhone and iPad, requires iOS / iPadOS 13.0 or later",
+                    zh: "支持 iPhone 与 iPad，需要 iOS / iPadOS 13.0 或更高版本",
+                },
+            },
+            {
+                label: {
+                    en: "Languages",
+                    zh: "语言",
+                },
+                value: {
+                    en: "English, Simplified Chinese, Traditional Chinese, and 6 more languages",
+                    zh: "支持英文、简体中文、繁体中文在内共 9 种语言",
+                },
+            },
+        ],
+        immersiveShowcase: {
+            orientation: "portrait",
+            heroEyebrow: {
+                en: "App Store image-first page",
+                zh: "参考 App Store 的画面优先页",
+            },
+            heroTitle: {
+                en: "Plant seeds, decorate your home, and keep the pace soft.",
+                zh: "种下种子，布置自己的房间，把节奏放慢一点。",
+            },
+            heroBody: {
+                en: "Organic Veggie sells itself best through its App Store screens: a tiny farm loop, cozy interiors, and a decorating system that feels as important as harvesting.",
+                zh: "Organic Veggie 最适合先让 App Store 截图自己说话：一边是轻量种植循环，一边是温和的室内布置感，装修的重要性几乎和收菜本身一样高。",
+            },
+            galleryEyebrow: {
+                en: "Screens from the App Store",
+                zh: "App Store 官方截图",
+            },
+            galleryTitle: {
+                en: "A cozy farming loop told through the store gallery",
+                zh: "通过商店截图把这套轻松循环讲清楚",
+            },
+            audienceBody: {
+                en: "If the player wants a game that can be checked in on briefly, rewards small acts of care, and lets decoration feel personal, this presentation should read like a low-pressure invitation.",
+                zh: "如果玩家想找的是那种可以偶尔上线照料一下、每次都有一点点推进、同时又能把房间布置出个人感的游戏，这个页面就应该像一张没有压力的邀请函。",
+            },
+            storyEyebrow: {
+                en: "Product setup",
+                zh: "产品设定",
+            },
+            storyTitle: {
+                en: "A cozy farm built around short, repeatable moments",
+                zh: "围绕短时可重复陪伴感搭出来的小农场",
+            },
+            featureEyebrow: {
+                en: "Why it works as a cozy game",
+                zh: "为什么它适合做成一款治愈向休闲游戏",
+            },
+        },
+        previewVideo: {
+            src: "/apps/organic-veggie-store/preview.mp4",
+            poster: "/apps/organic-veggie-store/screen-1.webp",
+            orientation: "portrait",
+            title: {
+                en: "App Store preview video",
+                zh: "App Store 预览视频",
+            },
+            body: {
+                en: "Official preview video captured from the App Store listing, showing the farming loop, decoration flow, and the game's relaxed pacing in motion.",
+                zh: "接入苹果 App Store 页面中的官方预览视频，用动态画面展示种植循环、装修流程和整体偏轻松的节奏。",
+            },
+        },
         storeLinks: {
-            appStore:
-                "https://apps.apple.com/app/apple-store/id6745701895?pt=118081168&ct=marhoo-homepage&mt=8",
+            appStore: "https://apps.apple.com/us/app/organic-veggie/id6745701895",
             googlePlay:
                 "https://play.google.com/store/apps/details?id=com.marhoo.vege",
         },
@@ -242,7 +457,7 @@ export const appCatalog: AppInfo[] = [
         icon: "/apps/marhoo/treehole-adventure-icon.webp",
         image: "/apps/treehole-adventure-store/hero.jpg",
         source: {
-            en: "Story and store facts referenced from the App Store listing",
+            en: "Cartoon-style puzzle game",
             zh: "卡通风解谜游戏",
         },
         status: "live",
@@ -455,6 +670,45 @@ export const appCatalog: AppInfo[] = [
             body: {
                 en: "Official preview video captured from the App Store listing so visitors can see the game's motion, pacing, and puzzle atmosphere before downloading.",
                 zh: "接入苹果商店页面中的官方预览视频，让访问者在下载前先看到游戏的动态演出、节奏和解谜氛围。",
+            },
+        },
+        immersiveShowcase: {
+            orientation: "landscape",
+            heroEyebrow: {
+                en: "Image-first game page",
+                zh: "以画面为主的游戏详情页",
+            },
+            heroTitle: {
+                en: "Fall through the tree hole, enter the missing town, and solve your way back.",
+                zh: "坠入树洞，进入失踪者之城，并靠解谜一步步找回归途。",
+            },
+            heroBody: {
+                en: "TreeHole Adventure works best when the world speaks first. This page now lets the screenshots carry the mood before the copy explains it.",
+                zh: "《树洞-奇妙之旅》最适合先让世界观自己说话，所以这个页面现在优先用截图建立氛围，再由文案补足信息。",
+            },
+            galleryEyebrow: {
+                en: "Screens from the adventure",
+                zh: "游戏截图",
+            },
+            galleryTitle: {
+                en: "Let the world sell the game",
+                zh: "先用画面把游戏讲出来",
+            },
+            audienceBody: {
+                en: "If the player likes hand-drawn mystery worlds, scene-based puzzles, and the feeling of uncovering how a town broke apart, the page should feel like an invitation to play.",
+                zh: "如果玩家喜欢手绘神秘世界、场景式解谜，以及逐步拼出小镇真相的体验，这个页面就应该像一张邀请你开始游玩的门票。",
+            },
+            storyEyebrow: {
+                en: "Story setup",
+                zh: "故事设定",
+            },
+            storyTitle: {
+                en: "A mystery setup with immediate stakes",
+                zh: "一开场就建立风险与谜团",
+            },
+            featureEyebrow: {
+                en: "Why it plays well as a game",
+                zh: "为什么它像一款值得玩的游戏",
             },
         },
         storeLinks: {
