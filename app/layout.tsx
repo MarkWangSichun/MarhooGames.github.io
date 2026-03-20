@@ -30,19 +30,35 @@ export const metadata: Metadata = {
 // to the current canonical routes, preserving old links that are already in the wild.
 const legacyHashRedirectScript = `
   (function() {
-    var hash = window.location.hash;
     var redirects = {
       '#/privacyPolicy': '/privacy',
       '#/termsAndConditions': '/terms'
     };
+    var normalizedPath = function(pathname) {
+      if (!pathname) {
+        return '/';
+      }
 
-    var destination = redirects[hash];
+      return pathname.endsWith('/') && pathname !== '/'
+        ? pathname.slice(0, -1)
+        : pathname;
+    };
+    var redirectIfNeeded = function() {
+      var destination = redirects[window.location.hash];
 
-    if (!destination) {
-      return;
-    }
+      if (!destination) {
+        return;
+      }
 
-    window.location.replace(destination);
+      if (normalizedPath(window.location.pathname) === destination) {
+        return;
+      }
+
+      window.location.replace(destination);
+    };
+
+    redirectIfNeeded();
+    window.addEventListener('hashchange', redirectIfNeeded);
   })();
 `;
 
