@@ -16,8 +16,7 @@ export function AppDetailContent({ app }: { app: AppInfo }) {
   const previewVideo = app.previewVideo;
   const immersiveShowcase = app.immersiveShowcase;
   const isImmersive = Boolean(immersiveShowcase);
-  const isCompactShowcase =
-    app.slug === "organic-veggie" && immersiveShowcase?.orientation === "portrait";
+  const isCompactShowcase = immersiveShowcase?.orientation === "portrait";
   const showcase = immersiveShowcase ?? {
     orientation: "landscape" as const,
     heroEyebrow: { en: "Product detail", zh: "产品详情" },

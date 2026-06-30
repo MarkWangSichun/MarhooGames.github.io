@@ -1,348 +1,291 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AppStoreBadgeLink, GooglePlayBadgeLink } from "@/components/store-badge-links";
 import { appCatalog } from "@/data/site";
 import { useTranslate } from "@/lib/i18n";
+import { AppStoreBadgeLink, GooglePlayBadgeLink } from "@/components/store-badge-links";
 
-const metrics = [
-  {
-    label: { en: "Platforms", zh: "平台" },
-    value: { en: "iOS / Android", zh: "iOS / Android" },
-  },
-];
-
-const contactMethods = [
-  {
-    label: { en: "Email", zh: "邮箱" },
-    title: { en: "Contact us", zh: "联系我们" },
-    value: { en: "marhoogames@gmail.com", zh: "marhoogames@gmail.com" },
-    description: {
-      en: "For business inquiries and product support, please use email.",
-      zh: "商务合作和产品支持，请直接通过邮箱联系。",
-    },
-    href: "mailto:marhoogames@gmail.com",
-  },
-];
-
-function ProductCardPreview({
-  src,
-  poster,
-  alt,
-  orientation,
+function GradientImagePlaceholder({
+  gradient,
+  label,
+  labelColor,
 }: {
-  src: string;
-  poster?: string;
-  alt: string;
-  orientation?: "landscape" | "portrait";
+  gradient: string;
+  label: string;
+  labelColor: "light" | "dark";
 }) {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const node = videoRef.current;
-    if (!node) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry?.isIntersecting ?? false);
-      },
-      { threshold: 0.45 },
-    );
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const node = videoRef.current;
-    if (!node) {
-      return;
-    }
-
-    if (!isVisible) {
-      node.pause();
-      return;
-    }
-
-    node.play().catch(() => {
-      // Ignore autoplay failures and keep the poster visible.
-    });
-  }, [isVisible]);
-
   return (
-    <div className="relative h-64 w-full overflow-hidden">
-      <video
-        ref={videoRef}
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        poster={poster}
-        aria-label={alt}
-        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+    <div className={`relative h-64 w-full overflow-hidden sm:h-72 lg:h-80 ${gradient}`}>
+      <p
+        className={`absolute inset-x-0 top-1/2 -translate-y-1/2 text-center font-heading text-lg font-semibold ${
+          labelColor === "light" ? "text-white/90" : "text-stone-600"
+        }`}
       >
-        <source src={src} type="video/mp4" />
-      </video>
-      {orientation !== "portrait" ? (
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-950/25 via-transparent to-transparent" />
-      ) : null}
+        {label}
+      </p>
     </div>
   );
 }
 
 export function HomeContent() {
   const t = useTranslate();
-  const featuredApp = appCatalog[0];
 
   return (
-    <div className="space-y-8 pb-8 sm:space-y-12">
-      <section className="grid gap-10 rounded-[2rem] border border-white/70 bg-white/75 p-8 shadow-[0_24px_80px_rgba(24,34,52,0.12)] backdrop-blur md:grid-cols-[1.2fr_0.8fr] md:p-12">
-        <div className="space-y-8">
-          <div className="space-y-5">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
-              {t({ en: "Studio Homepage", zh: "工作室官网" })}
-            </p>
-            <h1 className="max-w-3xl font-heading text-3xl leading-none tracking-tight text-stone-950 sm:text-4xl">
-              {t({
-                en: "Three focused apps, one studio site built to convert visits into installs.",
-                zh: "专注应用，开发中",
-              })}
-            </h1>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {metrics.map((metric) => (
-              <div
-                key={metric.label.en}
-                className="rounded-2xl border border-stone-200 bg-stone-50/70 p-4"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-stone-500">
-                  {t(metric.label)}
-                </p>
-                <p className="mt-3 text-lg font-bold text-stone-900">
-                  {t(metric.value)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="relative overflow-hidden rounded-[2rem] bg-stone-950 p-6 text-white">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(244,184,97,0.35),_transparent_36%),radial-gradient(circle_at_bottom_left,_rgba(88,138,255,0.4),_transparent_32%)]" />
-          <div className="relative space-y-6">
-            <div className="space-y-3">
-              <div className="flex items-center gap-4">
-                <Image
-                  src={featuredApp.icon}
-                  alt={`${t(featuredApp.name)} icon`}
-                  width={72}
-                  height={72}
-                  className="h-[72px] w-[72px] rounded-[18px] border border-white/15 object-cover"
-                />
-                <h2 className="font-heading text-3xl">{t(featuredApp.name)}</h2>
-              </div>
-              <p className="text-sm leading-7 text-stone-300">
-                {t(featuredApp.description)}
-              </p>
-            </div>
-            <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5">
-              <Image
-                src={featuredApp.image}
-                alt={t(featuredApp.name)}
-                width={800}
-                height={600}
-                className="h-auto w-full"
-                priority
-              />
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {featuredApp.highlights.slice(0, 4).map((item) => (
-                <div
-                  key={item.en}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-stone-100"
-                >
-                  {t(item)}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+    <div className="space-y-10 pb-8 sm:space-y-14">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center gap-4 px-4 pt-4 text-center sm:gap-5 sm:pt-8">
+        <p className="text-xs font-semibold uppercase tracking-[0.28em] text-stone-500">
+          {t({ en: "PRODUCT SHOWCASE", zh: "产品展示" })}
+        </p>
+        <h1 className="max-w-2xl font-heading text-4xl leading-none tracking-tight text-stone-950 sm:text-5xl">
+          {t({
+            en: "Focused products, crafted with care",
+            zh: "精选产品，专注体验",
+          })}
+        </h1>
+        <p className="max-w-lg text-base leading-7 text-stone-500 sm:text-lg">
+          {t({
+            en: "Two original works, two different directions — built by a two-person indie team",
+            zh: "两款独立作品，两种不同的探索方向 — 来自两人团队的原创设计",
+          })}
+        </p>
       </section>
 
-      <section className="space-y-3">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-stone-500">
-              {t({ en: "App Lineup", zh: "产品展示" })}
-            </p>
-          </div>
-        </div>
-        <div className="grid gap-3 lg:grid-cols-3">
-          {appCatalog.map((app) => {
-            const useStaticPreview = !app.previewVideo;
-            const hasDetailPage = app.status !== "coming-soon";
+      {/* Product Cards */}
+      <section className="grid gap-6 lg:grid-cols-2">
+        {appCatalog.map((app, index) => {
+          const isLive = app.status === "live";
+          const isComingSoon = app.status === "coming-soon";
+          const slug = app.slug;
 
-            return (
-              <article
-                key={app.slug}
-                className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-white/70 bg-white/80 shadow-[0_18px_50px_rgba(24,34,52,0.08)] backdrop-blur"
-              >
-              {hasDetailPage ? (
-                <Link
-                  href={`/apps/${app.slug}`}
-                  aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
-                  className="relative block overflow-hidden bg-stone-100"
-                >
-                  {!useStaticPreview && app.previewVideo ? (
-                    <ProductCardPreview
-                      src={app.previewVideo.src}
-                      poster={app.previewVideo.poster}
-                      alt={t(app.name)}
-                      orientation={app.previewVideo.orientation}
-                    />
-                  ) : (
-                    <div className="h-64 w-full overflow-hidden">
+          return (
+            <article
+              key={slug}
+              className="group flex flex-col overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/85 shadow-[0_1px_8px_rgba(148,168,154,0.08),0_4px_16px_rgba(148,168,154,0.12)] backdrop-blur transition duration-300 hover:shadow-[0_1px_8px_rgba(148,168,154,0.12),0_8px_24px_rgba(148,168,154,0.16)]"
+            >
+              {/* Product Image Area */}
+              <div className="relative overflow-hidden">
+                {isLive ? (
+                  <Link href={`/apps/${slug}`} className="block">
+                    <div className="relative h-64 w-full overflow-hidden sm:h-72 lg:h-80">
+                      {app.image ? (
+                        <Image
+                          src={app.image}
+                          alt={t(app.name)}
+                          width={1286}
+                          height={594}
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                        />
+                      ) : (
+                        <GradientImagePlaceholder
+                          gradient={
+                            index === 0
+                              ? "bg-[linear-gradient(180deg,#2a1545,#3d2870,#5a3a9a)]"
+                              : "bg-[linear-gradient(180deg,#f0ece0,#e5ded0,#dbd2c0)]"
+                          }
+                          label={t(app.name)}
+                          labelColor={index === 0 ? "light" : "dark"}
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/50 via-transparent to-transparent" />
+                    </div>
+                  </Link>
+                ) : (
+                  <div className="relative h-64 w-full overflow-hidden sm:h-72 lg:h-80">
+                    {app.image ? (
                       <Image
                         src={app.image}
                         alt={t(app.name)}
                         width={900}
                         height={640}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+                        className="h-full w-full object-cover"
                       />
-                    </div>
-                  )}
-                </Link>
-              ) : (
-                <div className="relative block overflow-hidden bg-stone-100">
-                  <div className="h-64 w-full overflow-hidden">
-                    <Image
-                      src={app.image}
-                      alt={t(app.name)}
-                      width={900}
-                      height={640}
-                      className="h-full w-full object-cover"
-                    />
+                    ) : (
+                      <GradientImagePlaceholder
+                        gradient={
+                          index === 0
+                            ? "bg-[linear-gradient(180deg,#2a1545,#3d2870,#5a3a9a)]"
+                            : "bg-[linear-gradient(180deg,#f0ece0,#e5ded0,#dbd2c0)]"
+                        }
+                        label={t(app.name)}
+                        labelColor={index === 0 ? "light" : "dark"}
+                      />
+                    )}
+                    {/* Coming Soon Badge */}
+                    <span className="absolute left-6 top-6 inline-flex items-center rounded-full bg-[#D89575] px-4 py-2 text-xs font-semibold text-white shadow-[0_4px_12px_rgba(216,149,117,0.3)]">
+                      {t({ en: "Coming soon", zh: "即将推出" })}
+                    </span>
                   </div>
-                </div>
-              )}
-              <div className="flex flex-1 flex-col space-y-5 p-6">
-                <div className="flex items-center gap-4">
-                  {hasDetailPage ? (
-                    <Link
-                      href={`/apps/${app.slug}`}
-                      aria-label={`${t(app.name)} ${t({ en: "details", zh: "详情" })}`}
-                      className="block overflow-hidden rounded-[18px]"
-                    >
-                      <Image
-                        src={app.icon}
-                        alt={`${t(app.name)} icon`}
-                        width={64}
-                        height={64}
-                        className="h-16 w-16 rounded-[18px] border border-stone-200 object-cover transition duration-300 hover:scale-[1.03]"
-                      />
-                    </Link>
-                  ) : (
-                    <div className="block overflow-hidden rounded-[18px]">
-                      <Image
-                        src={app.icon}
-                        alt={`${t(app.name)} icon`}
-                        width={64}
-                        height={64}
-                        className="h-16 w-16 rounded-[18px] border border-stone-200 object-cover"
-                      />
-                    </div>
-                  )}
-                  <div>
-                    <p className="mb-1 text-left text-sm font-bold text-stone-500">
-                      {t(app.category)}
-                    </p>
-                    {hasDetailPage ? (
-                      <Link
-                        href={`/apps/${app.slug}`}
-                        className="inline-block"
-                      >
-                        <h3 className="font-heading text-[1.3rem] leading-tight text-stone-950 transition hover:text-stone-700">
-                          {t(app.name)}
-                        </h3>
+                )}
+              </div>
+
+              {/* Card Content */}
+              <div className="flex flex-1 flex-col gap-5 p-6 sm:p-8">
+                {/* Category */}
+                <p className={`text-xs font-semibold uppercase tracking-[0.22em] ${
+                  isComingSoon ? "text-[#D89575]" : "text-[#87A878]"
+                }`}>
+                  {t(app.category)}
+                </p>
+
+                {/* Header Row: Icon + Name */}
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 overflow-hidden rounded-[18px] border border-stone-200 shadow-[0_8px_16px_rgba(24,34,52,0.06)]">
+                    {isLive ? (
+                      <Link href={`/apps/${slug}`}>
+                        <Image
+                          src={app.icon}
+                          alt={`${t(app.name)} icon`}
+                          width={64}
+                          height={64}
+                          className="h-14 w-14 object-cover transition duration-300 hover:scale-[1.03] sm:h-16 sm:w-16"
+                        />
                       </Link>
                     ) : (
-                      <h3 className="font-heading text-[1.3rem] leading-tight text-stone-950">
+                      <Image
+                        src={app.icon}
+                        alt={`${t(app.name)} icon`}
+                        width={64}
+                        height={64}
+                        className="h-14 w-14 object-cover sm:h-16 sm:w-16"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    {isLive ? (
+                      <Link href={`/apps/${slug}`} className="inline-block">
+                        <h2 className="font-heading text-2xl leading-tight text-stone-950 transition hover:text-stone-700 sm:text-[1.75rem]">
+                          {t(app.name)}
+                        </h2>
+                      </Link>
+                    ) : (
+                      <h2 className="font-heading text-2xl leading-tight text-stone-950 sm:text-[1.75rem]">
                         {t(app.name)}
-                      </h3>
+                      </h2>
                     )}
                   </div>
                 </div>
-                <div className="mt-auto space-y-3 border-t border-stone-200/80 pt-4">
-                  <div className="flex justify-center">
-                    {hasDetailPage ? (
+
+                {/* Tagline */}
+                <p className="text-sm leading-7 text-stone-500 sm:text-base">
+                  {t(app.tagline)}
+                </p>
+
+                {/* Highlights (for coming soon) or highlights grid */}
+                {app.highlights.length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {app.highlights.map((highlight) => (
+                      <span
+                        key={highlight.en}
+                        className="inline-flex items-center rounded-lg border border-[#E8DFD0] bg-[#FAF7F2] px-3 py-2 text-xs font-medium text-stone-500 sm:px-4"
+                      >
+                        {t(highlight)}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                {/* Action Row */}
+                <div className="mt-auto space-y-3 border-t border-stone-200/80 pt-5">
+                  {isLive ? (
+                    <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap">
+                      {app.storeLinks.appStore ? (
+                        <AppStoreBadgeLink
+                          href={app.storeLinks.appStore}
+                          compact
+                          label={t({
+                            en: "Download on the App Store",
+                            zh: "前往 App Store 下载",
+                          })}
+                        />
+                      ) : null}
+                      {app.storeLinks.googlePlay ? (
+                        <GooglePlayBadgeLink
+                          href={app.storeLinks.googlePlay}
+                          compact
+                          label={t({
+                            en: "Get it on Google Play",
+                            zh: "前往 Google Play",
+                          })}
+                        />
+                      ) : null}
                       <Link
-                        href={`/apps/${app.slug}`}
-                        className="inline-flex items-center justify-center rounded-full bg-stone-950 px-5 py-3 text-sm font-semibold text-white transition hover:bg-stone-800"
+                        href={`/apps/${slug}`}
+                        className="inline-flex items-center justify-center rounded-full bg-stone-950 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-stone-800"
                       >
                         {t({ en: "View details", zh: "查看详情" })}
                       </Link>
-                    ) : (
-                      <span className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-500">
-                        {t({ en: "Coming soon", zh: "即将推出" })}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex min-h-12 flex-wrap items-center justify-center gap-2 sm:flex-nowrap">
-                    {app.storeLinks.appStore ? (
-                      <AppStoreBadgeLink
-                        href={app.storeLinks.appStore}
-                        compact
-                        label={t({
-                          en: "Download on the App Store",
-                          zh: "前往 App Store 下载",
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <span className="inline-flex items-center gap-2 rounded-full border border-[#D89575] bg-[#FAF7F2] px-5 py-3 text-sm font-semibold text-[#D89575]">
+                        <span className="text-base">✦</span>
+                        {t({
+                          en: "Coming soon — stay tuned",
+                          zh: "即将上线，敬请期待",
                         })}
-                      />
-                    ) : null}
-                    {app.storeLinks.googlePlay ? (
-                      <GooglePlayBadgeLink
-                        href={app.storeLinks.googlePlay}
-                        compact
-                        label={t({
-                          en: "Get it on Google Play",
-                          zh: "前往 Google Play",
-                        })}
-                      />
-                    ) : null}
-                    {!hasDetailPage && !app.storeLinks.appStore && !app.storeLinks.googlePlay ? null : !app.storeLinks.appStore && !app.storeLinks.googlePlay ? (
-                      <span className="inline-flex items-center justify-center rounded-full border border-stone-200 bg-stone-100 px-5 py-3 text-sm font-semibold text-stone-500">
-                        {t({ en: "Coming soon", zh: "即将推出" })}
                       </span>
-                    ) : null}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
-              </article>
-            );
-          })}
+            </article>
+          );
+        })}
+      </section>
+
+      {/* CTA / Contact Section */}
+      <section className="flex justify-center">
+        <div className="w-full max-w-2xl rounded-[1.75rem] border border-[#E8DFD0] bg-[#FBF9F4] p-8 text-center shadow-[0_1px_8px_rgba(148,168,154,0.06)] sm:p-12">
+          <h2 className="font-heading text-2xl text-stone-950 sm:text-[1.75rem]">
+            {t({
+              en: "Have ideas or feedback about our products?",
+              zh: "对我们的产品有想法或建议？",
+            })}
+          </h2>
+          <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-stone-500 sm:text-base">
+            {t({
+              en: "Reach out via email — your feedback directly shapes our product direction",
+              zh: "欢迎通过邮件与我们联系，反馈和建议将直接影响产品方向",
+            })}
+          </p>
+          <a
+            href="mailto:marhoogames@gmail.com"
+            className="mx-auto mt-6 inline-flex items-center gap-2 rounded-xl bg-[#87A878] px-8 py-3.5 text-sm font-semibold text-white shadow-[0_2px_8px_rgba(135,168,120,0.25)] transition hover:bg-[#7a9b6c] hover:shadow-[0_4px_12px_rgba(135,168,120,0.3)] sm:text-base"
+          >
+            marhoogames@gmail.com
+          </a>
         </div>
       </section>
 
-      <section className="mx-auto max-w-2xl rounded-[999px] border border-white/55 bg-[rgba(255,249,239,0.78)] px-5 py-5 text-stone-950 shadow-[0_14px_30px_rgba(24,34,52,0.09)] backdrop-blur-xl sm:px-8 sm:py-6">
-        <div className="mx-auto max-w-xl text-center">
-          {contactMethods.map((method) => (
-            <div key={method.label.en} className="px-1.5 py-1 sm:px-3">
-              <p className="mx-auto max-w-lg text-[13px] leading-6 text-stone-600 sm:text-sm">
-                {t({
-                  en: `${method.title.en}. ${method.description.en}`,
-                  zh: `${method.title.zh}，${method.description.zh}`,
-                })}
-              </p>
-              <p className="mt-4 break-all font-heading text-lg leading-tight tracking-tight text-stone-950 sm:text-xl">
-                {t(method.value)}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Links footer */}
+      <div className="flex flex-wrap items-center justify-center gap-6 border-t border-stone-200/60 pt-8 text-sm">
+        <Link
+          href="/about"
+          className="font-medium text-stone-500 transition hover:text-stone-950"
+        >
+          {t({ en: "About", zh: "关于我们" })}
+        </Link>
+        <Link
+          href="/privacy"
+          className="font-medium text-stone-500 transition hover:text-stone-950"
+        >
+          {t({ en: "Privacy Policy", zh: "隐私政策" })}
+        </Link>
+        <Link
+          href="/terms"
+          className="font-medium text-stone-500 transition hover:text-stone-950"
+        >
+          {t({ en: "Terms of Service", zh: "用户条款" })}
+        </Link>
+        <Link
+          href="/feedback"
+          className="font-medium text-stone-500 transition hover:text-stone-950"
+        >
+          {t({ en: "Feedback", zh: "反馈" })}
+        </Link>
+      </div>
     </div>
   );
 }
