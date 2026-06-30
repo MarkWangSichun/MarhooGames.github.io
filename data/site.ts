@@ -64,7 +64,7 @@ export const appCatalog: AppInfo[] = [
     {
         slug: "focus",
         name: {
-            en: "Veggie Focus — Cozy Pomodoro Timer",
+            en: "PomoVeggie - Focus & Grow",
             zh: "专注菜菜 — 养成系番茄钟",
         },
         category: {

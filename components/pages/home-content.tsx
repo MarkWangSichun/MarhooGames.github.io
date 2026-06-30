@@ -259,33 +259,6 @@ export function HomeContent() {
         </div>
       </section>
 
-      {/* Links footer */}
-      <div className="flex flex-wrap items-center justify-center gap-6 border-t border-stone-200/60 pt-8 text-sm">
-        <Link
-          href="/about"
-          className="font-medium text-stone-500 transition hover:text-stone-950"
-        >
-          {t({ en: "About", zh: "关于我们" })}
-        </Link>
-        <Link
-          href="/privacy"
-          className="font-medium text-stone-500 transition hover:text-stone-950"
-        >
-          {t({ en: "Privacy Policy", zh: "隐私政策" })}
-        </Link>
-        <Link
-          href="/terms"
-          className="font-medium text-stone-500 transition hover:text-stone-950"
-        >
-          {t({ en: "Terms of Service", zh: "用户条款" })}
-        </Link>
-        <Link
-          href="/feedback"
-          className="font-medium text-stone-500 transition hover:text-stone-950"
-        >
-          {t({ en: "Feedback", zh: "反馈" })}
-        </Link>
-      </div>
     </div>
   );
 }
