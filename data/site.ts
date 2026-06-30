@@ -83,35 +83,10 @@ export const appCatalog: AppInfo[] = [
             en: "Anyone who wants a gentler, more rewarding way to build focus habits — no guilt, just growth",
             zh: "想要用更轻松、更有正反馈的方式养成专注习惯的用户 — 没有负罪感，只有成长感",
         },
-        icon: "/apps/vege-foc/foc_app_icon.jpg",
-        image: "/apps/vege-foc/foc_app_icon.jpg",
-        status: "coming-soon",
-        highlights: [
-            {
-                en: "Focus timer — count up or count down",
-                zh: "专注计时 — 支持正计时与倒计时",
-            },
-            {
-                en: "Veggie growing — plant & unlock your collection",
-                zh: "蔬菜养成 — 种植蔬菜，解锁图鉴",
-            },
-            {
-                en: "Room decorating — high-freedom furnishing system",
-                zh: "家居装扮 — 超高自由度装修系统",
-            },
-            {
-                en: "Tag categories — customize for study, work & more",
-                zh: "标签分类 — 自由定制学习&工作场景",
-            },
-            {
-                en: "White noise — immersive focus atmosphere",
-                zh: "白噪音 — 营造沉浸式专注环境",
-            },
-            {
-                en: "Data stats — clearly track your focus journey",
-                zh: "数据统计 — 清晰记录你的专注轨迹",
-            },
-        ],
+        icon: "/apps/vege-foc/icon_ios.jpg",
+        image: "/apps/vege-foc/hero.jpg",
+        status: "live",
+        highlights: [],
         storySections: [
             {
                 title: {
@@ -139,12 +114,12 @@ export const appCatalog: AppInfo[] = [
         storeFacts: [
             {
                 label: {
-                    en: "Expected release",
-                    zh: "预计推出",
+                    en: "Category",
+                    zh: "分类",
                 },
                 value: {
-                    en: "August 31, 2026",
-                    zh: "2026年8月31日",
+                    en: "Productivity / Lifestyle",
+                    zh: "效率 / 生活",
                 },
             },
             {
@@ -187,17 +162,63 @@ export const appCatalog: AppInfo[] = [
                     zh: "英文及 8 种语言（含中/日/韩/德/法/西/葡语）",
                 },
             },
+        ],
+        gallery: [
             {
-                label: {
-                    en: "Age rating",
-                    zh: "年龄分级",
-                },
-                value: {
-                    en: "9+",
-                    zh: "9+",
-                },
+                src: "/apps/vege-foc/screenshots/Ios_En_1.jpg",
+                alt: { en: "Veggie Focus main timer screen", zh: "专注菜菜 — 主计时器界面" },
+                title: { en: "Tap to Focus, Grow alongside your Veggies", zh: "轻触开始，和你的菜菜一起成长" },
+                body: { en: "A cozy timer screen with your veggie buddy watching over each session.", zh: "温暖的计时器界面，每次专注都有可爱的菜菜陪伴。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_2.jpg",
+                alt: { en: "Veggie growth progression", zh: "蔬菜成长过程" },
+                title: { en: "Every focus session helps your Veggies grow", zh: "每次专注都会让菜菜茁壮成长" },
+                body: { en: "Watch your plant grow through stages as you complete focus sessions.", zh: "完成专注时段后，看着植物一步步从种子长成成熟的菜菜。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_3.jpg",
+                alt: { en: "Cozy home decoration room", zh: "温馨家居装扮房间" },
+                title: { en: "Earn coins through focus, Decorate your cozy home", zh: "专注赚取金币，装饰温馨小家" },
+                body: { en: "Use rewards from focus sessions to unlock furniture and fill your room with personality.", zh: "用专注奖励兑换家具，把属于你的空间装点成独一无二的小家。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_4.jpg",
+                alt: { en: "Furniture mix & match system", zh: "家具自由搭配系统" },
+                title: { en: "Lots of furniture, Mix & match freely", zh: "海量家具，自由搭配" },
+                body: { en: "Browse a rich furniture catalog and arrange every room exactly the way you like it.", zh: "浏览丰富的家具目录，按自己的喜好自由布置每个房间。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_5.jpg",
+                alt: { en: "Interactive furniture details", zh: "互动家具细节" },
+                title: { en: "Lots of interactive furniture", zh: "丰富的互动家具" },
+                body: { en: "Many pieces have hidden interactions — tap, drag, and discover surprises around your home.", zh: "许多家具藏有隐藏互动——点击、拖拽，在家中探索各种惊喜。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_6.jpg",
+                alt: { en: "Focus analytics dashboard", zh: "专注数据统计面板" },
+                title: { en: "Multiple focus modes with visual analytics", zh: "多种专注模式与可视化统计" },
+                body: { en: "Count up or count down, track daily habits, and see your progress in beautiful charts.", zh: "正计时或倒计时自由切换，追踪每日习惯，用精美的图表记录进步。" },
+            },
+            {
+                src: "/apps/vege-foc/screenshots/Ios_En_7.jpg",
+                alt: { en: "Veggie collection & achievements", zh: "蔬菜图鉴与成就" },
+                title: { en: "Grow veggies and unlock achievements", zh: "种植菜菜，解锁成就" },
+                body: { en: "Collect unique veggies in your garden book — each one is a trophy for your focus journey.", zh: "在图鉴中收集独一无二的菜菜——每一株都是你专注路上的勋章。" },
             },
         ],
+        immersiveShowcase: {
+            orientation: "portrait",
+            heroEyebrow: { en: "Cozy focus companion", zh: "治愈系专注伙伴" },
+            heroTitle: { en: "A warm little world where focus grows into something you look forward to.", zh: "一个温暖的小世界，让每次专注都变成值得期待的事。" },
+            heroBody: { en: "Veggie Focus is best experienced visually — soft colors, gentle animations, and a veggie friend that makes concentration feel like play.", zh: "《专注菜菜》最适合先让画面自己说话——柔和的配色、温柔的动画，还有一位让专注变得像游戏一样有趣的菜菜伙伴。" },
+            galleryEyebrow: { en: "App screenshots", zh: "应用截图" },
+            galleryTitle: { en: "See how cozy focus feels", zh: "感受治愈系专注体验" },
+            audienceBody: { en: "If gentle positive feedback sounds better than guilt-driven streaks, this page should feel like stepping into a tiny garden that grows alongside you.", zh: "如果温和的正反馈听起来比负罪感驱动的连续打卡更有吸引力，这个页面应该就像走进一座和你一起长大的小小花园。" },
+            storyEyebrow: { en: "Why we built this", zh: "为什么做这款应用" },
+            storyTitle: { en: "Focus should feel like care, not chore", zh: "专注应该是照料，而不是苦差事" },
+            featureEyebrow: { en: "What makes it special", zh: "产品亮点" },
+        },
         storeLinks: {
             appStore:
                 "https://apps.apple.com/cn/app/%E4%B8%93%E6%B3%A8%E8%8F%9C%E8%8F%9C-%E5%85%BB%E6%88%90%E7%B3%BB%E7%95%AA%E8%8C%84%E9%92%9F/id6756035961",
