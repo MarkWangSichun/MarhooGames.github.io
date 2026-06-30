@@ -7,7 +7,7 @@ import { LanguageToggle } from "@/components/language-toggle";
 import { useTranslate } from "@/lib/i18n";
 
 const links = [
-  { href: "/", label: { en: "Product", zh: "产品" } },
+  { href: "/", label: { en: "Products", zh: "产品" } },
   { href: "/about", label: { en: "About", zh: "关于我们" } },
   { href: "/privacy", label: { en: "Privacy Policy", zh: "隐私政策" } },
   {
