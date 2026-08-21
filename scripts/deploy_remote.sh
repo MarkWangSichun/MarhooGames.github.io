@@ -20,7 +20,7 @@ cat > /etc/nginx/conf.d/marhoo_ip.conf <<'EOF'
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
-    server_name _ 47.108.132.52;
+    server_name _ 106.14.140.9;
     root /var/www/html/marhoo_home_page;
 
     include /etc/nginx/default.d/*.conf;
