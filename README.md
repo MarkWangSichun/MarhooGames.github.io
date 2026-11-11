@@ -7,6 +7,10 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 视频和封面位于 `public/editorial/focus/`，构建后会随静态页面导出到 `out/`。
 页面设置了 `noindex, nofollow`，但仍是无需登录即可访问的公开链接。
 
+编辑页标题使用应用原有的江城圆体 600W，位于 `public/editorial/focus/fonts/`，附 OFL 授权说明。网页字体仅包含“专注菜菜”所需字形；修改应用名时需重新生成子集，其余文字会使用后备字体。
+
+圣诞装饰位于 `public/editorial/focus/christmas/furniture/`，来自应用 `Assets/_Packs/Demo/Furnitures` 各家具类别中的 `Home_261109_Xmas_*_12x_canvasModified.png` 原始资源，圣诞树采用 `XmasTree#2` 灯光版本。展示时保留各图片原始宽高比。
+
 视频转换参数：H.264、CRF 21、medium preset、yuv420p、AAC 128 kbps、`-movflags +faststart`，保持原分辨率及帧率。封面取自源视频第 2 秒。
 
 常规页面通过 `(site)` 路由组共用 `SiteShell`；编辑预览页仅使用根布局。部署时沿用现有静态发布流程，并验证该路径可直接打开、MP4 响应为 `video/mp4`，以及 Range 请求返回 `206 Partial Content`。不要把本地源 MOV 文件复制到公开目录。
