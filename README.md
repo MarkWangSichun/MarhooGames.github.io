@@ -3,13 +3,21 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 ## 编辑预览页
 
 `/editorial/focus/` 用于分享「专注菜菜」宣传视频，不包含主站导航。
-应用名、介绍、邮箱及媒体地址集中在 `data/editorial.ts`；填写 `introduction` 即可显示一句介绍，空字符串会完全隐藏该段。
+应用名、宣传语、介绍、邮箱及媒体地址集中在 `data/editorial.ts`；`introduction` 为空字符串时会隐藏该段。
 视频和封面位于 `public/editorial/focus/`，构建后会随静态页面导出到 `out/`。
 页面设置了 `noindex, nofollow`，但仍是无需登录即可访问的公开链接。
 
-编辑页标题使用应用原有的江城圆体 600W，位于 `public/editorial/focus/fonts/`，附 OFL 授权说明。网页字体仅包含“专注菜菜”所需字形；修改应用名时需重新生成子集，其余文字会使用后备字体。
+编辑页使用应用原有的江城圆体 600W，位于 `public/editorial/focus/fonts/`，附 OFL 授权说明。网页字体仅包含当前信息卡所需字形；修改文字时需更新字体子集，其余文字会使用后备字体。
 
-圣诞装饰位于 `public/editorial/focus/christmas/furniture/`，来自应用 `Assets/_Packs/Demo/Furnitures` 各家具类别中的 `Home_261109_Xmas_*_12x_canvasModified.png` 原始资源，圣诞树采用 `XmasTree#2` 灯光版本。展示时保留各图片原始宽高比。
+页面按用户提供的 3840×2160 JPG 排版，素材从配套的《网站布局.psd》分层导出到 `public/editorial/focus/christmas/layout/`。桌面保留原稿的场景、视频位置及信息卡比例；窄屏将信息卡重排，并单独组合底部树、雪人与礼物。文字和邮箱为真实 HTML，视频仍使用原生播放器。
+
+重新导出素材（不会改写源 PSD）：
+
+```bash
+uv run --with psd-tools --with scipy python scripts/export_editorial_psd.py /path/to/网站布局.psd
+```
+
+导出脚本按参考 JPG 排除 PSD 多出的顶部彩灯，并保留背景、底部家具、面板、应用图标及虚线分隔素材。
 
 视频转换参数：H.264、CRF 21、medium preset、yuv420p、AAC 128 kbps、`-movflags +faststart`，保持原分辨率及帧率。封面取自源视频第 2 秒。
 

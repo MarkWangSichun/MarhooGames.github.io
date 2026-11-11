@@ -1,0 +1,259 @@
+.page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  overflow: hidden;
+  background: #b94e3c;
+  color: #fff1cb;
+}
+
+/* The desktop scene follows the supplied 3840 × 2160 Photoshop canvas. */
+.composition {
+  position: relative;
+  left: 50%;
+  width: max(100vw, 177.777778svh);
+  height: max(100svh, 56.25vw);
+  transform: translateX(-50%);
+  background: url("/editorial/focus/christmas/layout/scene.webp") center / 100% 100% no-repeat;
+}
+
+.content {
+  position: absolute;
+  top: 4.490741%;
+  left: 50%;
+  width: 30.364583%;
+  transform: translateX(-50%);
+  container-type: inline-size;
+}
+
+.details {
+  position: relative;
+  width: 104.288165%;
+  aspect-ratio: 1216 / 283;
+  margin-top: 1.143511cqw;
+  margin-left: -2.229846%;
+  container-type: inline-size;
+}
+
+.panelSurface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.icon {
+  position: absolute;
+  left: 4.523026%;
+  top: 7.773852%;
+  width: 19.490132%;
+  height: auto;
+}
+
+.dot {
+  position: absolute;
+  left: 23.190789%;
+  top: 33.922261%;
+  width: 7.319079%;
+  height: auto;
+}
+
+.name {
+  position: absolute;
+  left: 31.414474%;
+  top: 36.749117%;
+  margin: 0;
+  color: #f4f8d8;
+  font-size: 6.578947cqw;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.divider {
+  position: absolute;
+  left: 61.677632%;
+  top: 13.074205%;
+  width: 0.657895%;
+  height: 74.204947%;
+}
+
+.copy {
+  position: absolute;
+  left: 65.871711%;
+  top: 24.734982%;
+  width: 29.2%;
+  height: 61%;
+}
+
+.tagline,
+.introduction {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.tagline {
+  font-size: 2.960526cqw;
+  line-height: 1.1;
+}
+
+.introduction {
+  margin-top: 0.6cqw;
+  font-size: 1.973684cqw;
+  line-height: 1.25;
+}
+
+.email {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: inherit;
+  font-size: 2.302632cqw;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.email:hover {
+  opacity: 0.8;
+}
+
+.email:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.mobileScenery {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .composition {
+    left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100svh;
+    padding: 24px 0 200px;
+    transform: none;
+    background: url("/editorial/focus/christmas/layout/wallpaper.webp") center top / 430px auto repeat;
+  }
+
+  .content {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: min(88%, 460px);
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .mobileScenery {
+    display: block;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .floor {
+    position: absolute;
+    inset: auto 0 0;
+    height: 175px;
+    background: url("/editorial/focus/christmas/layout/floor.webp") center bottom / auto 175px no-repeat;
+  }
+
+  .tree {
+    position: absolute;
+    left: -80px;
+    bottom: -34px;
+    width: 210px;
+    height: auto;
+  }
+
+  .snowman {
+    position: absolute;
+    right: -26px;
+    bottom: -18px;
+    width: 125px;
+    height: auto;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: center;
+    gap: 12px 14px;
+    width: 100%;
+    aspect-ratio: auto;
+    margin: 16px 0 0;
+    padding: 16px 18px;
+    border: 1px solid rgb(255 224 185 / 25%);
+    border-radius: 22px;
+    background: rgb(255 153 124 / 38%);
+    box-shadow: 0 5px 18px rgb(100 30 18 / 18%), inset 0 1px 0 rgb(255 230 204 / 20%);
+    backdrop-filter: blur(12px);
+  }
+
+  .panelSurface,
+  .dot,
+  .divider {
+    display: none;
+  }
+
+  .icon {
+    position: static;
+    width: 88px;
+    max-width: none;
+    margin: -12px;
+  }
+
+  .name {
+    position: relative;
+    left: auto;
+    top: auto;
+    padding-left: 18px;
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .name::before {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #ffdf28;
+    content: "";
+    transform: translateY(-50%);
+    box-shadow: 0 0 10px rgb(255 207 51 / 35%);
+  }
+
+  .copy {
+    position: static;
+    grid-column: 1 / -1;
+    width: auto;
+    height: auto;
+    padding-top: 12px;
+    border-top: 1px dashed rgb(255 237 195 / 55%);
+  }
+
+  .tagline {
+    font-size: 16px;
+  }
+
+  .introduction {
+    margin-top: 5px;
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .email {
+    position: static;
+    display: inline-block;
+    margin-top: 13px;
+    font-size: 13px;
+  }
+}

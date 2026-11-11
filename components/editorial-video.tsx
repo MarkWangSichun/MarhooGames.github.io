@@ -14,7 +14,7 @@ export function EditorialVideo({ src, poster, name, email }: EditorialVideoProps
 
   return (
     <div className="w-full">
-      <div className="mx-auto w-full max-w-[min(100%,calc(72svh*0.75))] overflow-hidden rounded-2xl bg-stone-950 shadow-[0_16px_56px_rgba(51,65,45,0.12)] ring-1 ring-stone-900/5">
+      <div className="w-full overflow-hidden rounded-[2.4cqw] bg-stone-950">
         <video
           aria-label={`${name}宣传视频`}
           className="block aspect-[3/4] h-auto w-full object-contain"

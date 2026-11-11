@@ -1,9 +1,9 @@
-Focus Editorial Rounded — title-only subset
+Focus Editorial Rounded — editorial card subset
 
 Derived from the application's Assets/Pomo/Font/PomoFont600W.ttf
 Original family: JiangChengYuanTi / 江城圆体 600W
 Embedded designer credit: LiuPeng
-Modified for this website: subset to 专注菜菜, converted to WOFF2, renamed
+Modified for this website: subset to the editorial card's Chinese and Latin text, converted to WOFF2, renamed
 Focus Editorial Rounded. Original embedded name and licence records are retained.
 
 License text source: https://openfontlicense.org/documents/OFL.txt
