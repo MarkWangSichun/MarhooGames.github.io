@@ -1,5 +1,16 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## 编辑预览页
+
+`/editorial/focus/` 用于分享「专注菜菜」宣传视频，不包含主站导航。
+应用名、介绍、邮箱及媒体地址集中在 `data/editorial.ts`；填写 `introduction` 即可显示一句介绍，空字符串会完全隐藏该段。
+视频和封面位于 `public/editorial/focus/`，构建后会随静态页面导出到 `out/`。
+页面设置了 `noindex, nofollow`，但仍是无需登录即可访问的公开链接。
+
+视频转换参数：H.264、CRF 21、medium preset、yuv420p、AAC 128 kbps、`-movflags +faststart`，保持原分辨率及帧率。封面取自源视频第 2 秒。
+
+常规页面通过 `(site)` 路由组共用 `SiteShell`；编辑预览页仅使用根布局。部署时沿用现有静态发布流程，并验证该路径可直接打开、MP4 响应为 `video/mp4`，以及 Range 请求返回 `206 Partial Content`。不要把本地源 MOV 文件复制到公开目录。
+
 ## Getting Started
 
 First, run the development server:
