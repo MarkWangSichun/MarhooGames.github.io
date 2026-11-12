@@ -1,6 +1,6 @@
-"""Export the editorial artwork without changing the source Photoshop document.
+"""Export the PomoVeggie press artwork without changing the source Photoshop document.
 
-Run with: uv run --with psd-tools --with scipy python scripts/export_editorial_psd.py SOURCE.psd
+Run with: uv run --with psd-tools --with scipy python scripts/export_press_psd.py SOURCE.psd
 """
 
 import sys
@@ -14,7 +14,7 @@ def named(group, name):
 
 
 psd = PSDImage.open(sys.argv[1])
-output = Path(__file__).resolve().parents[1] / "public/editorial/focus/christmas/layout"
+output = Path(__file__).resolve().parents[1] / "public/press/pomoveggie"
 output.mkdir(parents=True, exist_ok=True)
 
 # The supplied JPG omits the top garland that is visible in the PSD.

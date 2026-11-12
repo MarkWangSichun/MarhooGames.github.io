@@ -14,7 +14,7 @@
   width: max(100vw, 177.777778svh);
   height: max(100svh, 56.25vw);
   transform: translateX(-50%);
-  background: url("/editorial/focus/christmas/layout/scene.webp") center / 100% 100% no-repeat;
+  background: url("/press/pomoveggie/scene.webp") center / 100% 100% no-repeat;
 }
 
 .content {
@@ -137,7 +137,7 @@
     min-height: 100svh;
     padding: 24px 0 200px;
     transform: none;
-    background: url("/editorial/focus/christmas/layout/wallpaper.webp") center top / 430px auto repeat;
+    background: url("/press/pomoveggie/wallpaper.webp") center top / 430px auto repeat;
   }
 
   .content {
@@ -161,7 +161,7 @@
     position: absolute;
     inset: auto 0 0;
     height: 175px;
-    background: url("/editorial/focus/christmas/layout/floor.webp") center bottom / auto 175px no-repeat;
+    background: url("/press/pomoveggie/floor.webp") center bottom / auto 175px no-repeat;
   }
 
   .tree {

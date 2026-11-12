@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 
-type EditorialVideoProps = {
+type PressVideoProps = {
   src: string;
   poster: string;
   name: string;
   email: string;
 };
 
-export function EditorialVideo({ src, poster, name, email }: EditorialVideoProps) {
+export function PressVideo({ src, poster, name, email }: PressVideoProps) {
   const [failed, setFailed] = useState(false);
 
   return (
