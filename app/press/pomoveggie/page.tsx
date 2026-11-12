@@ -50,7 +50,7 @@ export default function PomoVeggiePressPage() {
             <div className={styles.copy}>
               <p className={styles.tagline}>{content.tagline}</p>
               {content.introduction.trim() && <p className={styles.introduction}>{content.introduction}</p>}
-              <a href={`mailto:${content.email}`} className={styles.email}>{content.displayEmail}</a>
+              <a href={`mailto:${content.email}`} className={styles.email}>{content.email}</a>
             </div>
           </section>
         </div>

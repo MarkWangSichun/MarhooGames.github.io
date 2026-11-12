@@ -5,7 +5,6 @@ export const pomoVeggiePress = {
   introduction: "好用、好看、好玩的专注应用",
   icon: "/press/pomoveggie/app-icon.webp",
   email: "developer@marhoo.com",
-  displayEmail: "Developer@Marhoo.com",
   video: "/press/pomoveggie/promo.mp4",
   poster: "/press/pomoveggie/poster.jpg",
 };
